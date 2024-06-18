@@ -1,0 +1,46 @@
+
+ion-content {
+  --padding-bottom: 150px; /* Adiciona um padding extra no final */
+}
+.event-title {
+  white-space: normal;
+  word-wrap: anywhere;
+  overflow-wrap: break-word;
+  display: block;
+  text-align: start;
+  padding: 5px;
+  font-size: 1.3em;
+}
+.center-title {
+  white-space: normal;
+  word-wrap: anywhere;
+  overflow-wrap: break-word;
+  display: block;
+  text-align: start;
+  padding-left: 5px;
+  font-size: 1.0em;
+}
+.localization {
+  display: flex;
+  align-items: flex-start; /* Ajusta o alinhamento vertical dos itens */
+  white-space: normal;
+  word-wrap: anywhere;
+  overflow-wrap: break-word;
+  text-align: start;
+  padding-left: 5px;
+  font-size: 0.7em;
+}
+
+.localization ion-icon {
+  margin-right: 5px;
+}
+
+.localization .text-container {
+  display: flex;
+  flex-direction: column; /* Empilha os parágrafos verticalmente */
+}
+
+.localization p {
+  margin: 0px; /* Remove a margem padrão dos parágrafos */
+  margin-right: 10px;
+}

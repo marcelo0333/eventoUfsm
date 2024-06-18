@@ -1,0 +1,25 @@
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.logo{
+  height: 50px;
+  width: 50px;
+}
+ion-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+.custom-card {
+  height:max-content;
+  max-width: 500px;
+  padding: 50px; 
+}
+.ion-button
+{
+  margin: 20px;
+}

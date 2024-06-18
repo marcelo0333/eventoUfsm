@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="background-color: #f6f7f9">
+    <ion-buttons slot="start">
+      <ion-button routerLink="">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-img style="height: 40px; margin-right: 14%" src="../assets/logo.png"></ion-img>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-img style="height: 200px" [src]="event.imgEvent"></ion-img>
+  <h1 class="event-title" id="eventTitle">{{ event.eventName }}</h1>
+  <h2 class="center-title">{{ event.centerName}}</h2>
+  <div class="localization">
+    <ion-icon size="large" name="location"></ion-icon>
+    <div class="text-container">
+      <p>Local: {{local.nameLocal}}</p>
+      <p>{{local.address}}, {{local.city}} {{local.cep}}</p>
+    </div>
+  </div>
+  <br>
+  <div class="localization">
+    <ion-icon size="large" name="alarm"></ion-icon>
+    <div class="text-container">
+      <p>{{event.dateInitial}}</p>
+      <p>{{event.dateFinal}}</p>
+    </div>
+  </div>
+  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
+ <div>
+      <h1 class="event-title">Descrição</h1>
+      <p style="margin:10px">{{event.description}}</p>
+ </div>
+  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
+  <h1 class="event-title">Local</h1>
+  <div id="map" style="height: 300px; width: 100%; padding: 20px;"></div>
+  <div class="center-title">
+      <h2 class="center-title">Local: {{local.nameLocal}}</h2>
+      <h2 class="center-title">{{local.address}}, {{local.city}} {{local.cep}}</h2>
+  </div>
+  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
+<div>
+  <h1 class="event-title" style="text-align: center">Precisa de ajuda?</h1>
+  <h4  style="text-align: justify; padding: 20px; padding-top: 0">Acesse a nossa central de ajuda ou entre em contato com o <br>
+    responsavel pelo evento.</h4>
+
+  <h4  style="text-align: center; color: aqua">Contato <br> {{event.contact}}</h4>
+</div>
+</ion-content>
+
+<ion-footer >
+  <ion-toolbar>
+    <ion-title>Footer</ion-title>
+  </ion-toolbar>
+</ion-footer>

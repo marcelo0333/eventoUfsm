@@ -1,0 +1,32 @@
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.event-card{
+  max-width:400px;
+  height: 350px;
+  border-radius: 20px;
+}
+.swiper-slide-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens horizontalmente */
+  justify-content: center; /* Centraliza os itens verticalmente */
+  padding: 20px;
+}
+
+.category-img {
+  height: 50px;
+  width: 45px;
+  margin-bottom: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.category-text {
+  text-align: center;
+}
