@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { LoginDTO, SignInResponse, UserModel } from "../../../../../projeto/mobile-app/src/app/shared/auth.data.transfer.object";
+import { LoginDTO, SignInResponse, UserModel } from "../models/auth.data.transfer.object";
 import {environment} from "../../environments/environment";
 
 @Injectable({
