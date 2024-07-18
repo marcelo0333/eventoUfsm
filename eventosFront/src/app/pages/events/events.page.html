@@ -4,12 +4,31 @@
       <ion-button routerLink="">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
+      <ion-button *ngIf="isBookmarked" (click)="deleteBookmark()">
+        <ion-icon name="heart" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!isBookmarked" (click)="saveBookmark()">
+        <ion-icon name="heart-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="isCreatedByUser" (click)="openEditModal()">
+        <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="isCreatedByUser" (click)="deleteEvent()">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="openReminderModal()">
+        <ion-icon name="alarm-outline" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-img style="height: 40px; margin-right: 14%" src="../assets/logo.png"></ion-img>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <ion-img style="height: 200px" [src]="event.imgEvent"></ion-img>
+  <ion-img *ngIf="event.imgEvent" style="height: 200px" [src]="event.imgEvent"></ion-img>
+  <div style="display: flex; align-items: center; padding: 0 10px; justify-content: inherit; ">
+    <p style="margin-right: 8px; margin-bottom: 14px">{{event.totalBookmarks}}</p>
+    <ion-icon name="heart"></ion-icon>
+  </div>
   <h1 class="event-title" id="eventTitle">{{ event.eventName }}</h1>
   <h2 class="center-title">{{ event.centerName}}</h2>
   <div class="localization">
@@ -47,7 +66,95 @@
 
   <h4  style="text-align: center; color: aqua">Contato <br> {{event.contact}}</h4>
 </div>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Eventos</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="form">
+          <ion-item>
+            <ion-label position="floating">Nome do Evento</ion-label>
+            <ion-input formControlName="eventName"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['eventName'].invalid && form.controls['eventName'].touched">
+            <ion-label color="danger">Nome do Evento é obrigatório</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <input type="file" (change)="onFileChange($event)" />
+          </ion-item>
+          <ion-item *ngIf="imgEventError">
+            <ion-label color="danger">Imagem do Evento é obrigatória</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Tipo de Evento</ion-label>
+            <ion-input formControlName="typeEvent"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['typeEvent'].invalid && form.controls['typeEvent'].touched">
+            <ion-label color="danger">Tipo de Evento é obrigatório</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Descrição</ion-label>
+            <ion-input formControlName="description"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
+            <ion-label color="danger">Descrição é obrigatória</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Data Inicial</ion-label>
+            <ion-input formControlName="dateInitial" type="date"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['dateInitial'].invalid && form.controls['dateInitial'].touched">
+            <ion-label color="danger">Data Inicial é obrigatória</ion-label>
+          </ion-item>
+
+
+          <ion-item>
+            <ion-label position="floating">Data Final</ion-label>
+            <ion-input formControlName="dateFinal" type="date"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['dateFinal'].invalid && form.controls['dateFinal'].touched">
+            <ion-label color="danger">Data Final é obrigatória</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Nome do Centro</ion-label>
+            <ion-input formControlName="centerName"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['centerName'].invalid && form.controls['centerName'].touched">
+            <ion-label color="danger">Nome do Centro é obrigatório</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Contato</ion-label>
+            <ion-input formControlName="contact"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="form.controls['contact'].invalid && form.controls['contact'].touched">
+            <ion-label color="danger">Contato é obrigatório</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Locais</ion-label>
+            <ion-select formControlName="localIds" multiple="true">
+              <ion-select-option *ngFor="let local of locals" [value]="local.id">{{ local.nameLocal }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-button expand="full" (click)="editEvent()">Salvar</ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
+
 
 <ion-footer >
   <ion-toolbar>

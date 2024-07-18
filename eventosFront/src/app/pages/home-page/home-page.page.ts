@@ -2,7 +2,11 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import Swiper from 'swiper';
 import { EventService } from '../../service/event.service';
 import { Event } from '../../models/events.model';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { TokenService } from "../../service/auth.token.service";
+import { UserModel } from "../../models/auth.data.transfer.object";
+import { FormControl } from "@angular/forms";
+import { debounceTime } from "rxjs";
 
 @Component({
   selector: 'app-home-page',
@@ -12,45 +16,101 @@ import {Router} from "@angular/router";
 export class HomePagePage implements AfterViewInit, OnInit {
 
   events: Event[] = [];
+  eventsBookmarks: Event[] = [];
+
+  user!: UserModel;
+  searchControl: FormControl = new FormControl('');
+  searchResults: Event[] = [];
+  categorys: any[] = [
+    {
+      imgAsset: '../../../assets/icon/concerts.png',
+      CategoryName: 'Culturais',
+    },
+    {
+      imgAsset: '../../../assets/icon/light.png',
+      CategoryName: 'Técnico-Científicos',
+    },
+    {
+      imgAsset: '../../../assets/icon/theater.png',
+      CategoryName: 'Artísticos',
+    },
+    {
+      imgAsset: '../../../assets/icon/work-team.png',
+      CategoryName: 'Profissionais',
+    },
+    {
+      imgAsset: '../../../assets/icon/training.png',
+      CategoryName: 'Oficiais',
+    },
+    {
+      imgAsset: '../../../assets/icon/fair-trade.png',
+      CategoryName: 'Sociais',
+
+    },
+  ];
+  private loading: boolean = false;
 
   constructor(
     private eventService: EventService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {
+    const userValide = this.tokenService.sessionIsValid();
+
+    if (userValide) {
+      console.log("valido");
+      this.loadEvents();
+    } else {
+      console.error("não é valido");
+    }
     this.loadEvents();
+    this.setupSearch();
   }
 
-  categorys: any[] = [
-    {
-      imgAsset:'../../../assets/icon/concerts.png',
-      CategoryName:'Concertos',
-    },
-    {
-      imgAsset:'../../../assets/icon/light.png',
-      CategoryName:'Cientificos',
-    },
-    {
-      imgAsset:'../../../assets/icon/theater.png',
-      CategoryName:'Teatro',
-    },
-    {
-      imgAsset:'../../../assets/icon/training.png',
-      CategoryName:'WorkShop',
-    },
-  ];
+  setupSearch() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(query => {
+      if (query) {
+        this.eventService.searchEvents(query).subscribe(
+          res => {
+            this.searchResults = res;
+          }, error => {
+            console.error('erro ao buscar', error);
+          }
+        );
+      } else {
+        this.searchResults = [];
+      }
+    });
+  }
 
   loadEvents(): void {
+    this.loading = true;
     this.eventService.getEvents().subscribe(
       (data: Event[]) => {
         this.events = data;
         console.log('Eventos carregados:', this.events);
+        this.loading = false;
         this.initializeSwiper();
       },
       (error) => {
+        this.loading = false;
         console.error('Erro ao carregar eventos:', error);
-        // Trate o erro de maneira apropriada, como exibir uma mensagem de erro para o usuário
+      }
+    );
+    this.eventService.getEventsBookmarks().subscribe(
+      (data: Event[]) => {
+        this.eventsBookmarks = data;
+        console.log('Eventos carregados:', this.eventsBookmarks);
+        this.loading = false;
+        this.initializeSwiper();
+      },
+      (error) => {
+        this.loading = false;
+        console.error('Erro ao carregar eventos:', error);
       }
     );
   }
@@ -76,7 +136,18 @@ export class HomePagePage implements AfterViewInit, OnInit {
   }
 
   goToEventDetails(eventsId: bigint) {
-    console.log(eventsId)
-    this.router.navigate(['/events', eventsId])
+    console.log(eventsId);
+    this.router.navigate(['/events', eventsId]);
+  }
+
+  goToCategory(typeEvent: string) {
+    console.log(typeEvent);
+    this.router.navigate(['tabs/category', typeEvent]);
+  }
+  doRefresh(event: any): void {
+    this.loadEvents();
+    setTimeout(() => {
+      event.target.complete();
+    }, 3000);
   }
 }

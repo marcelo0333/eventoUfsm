@@ -2,8 +2,11 @@ package com.events.eventosUfsm.model.user;
 
 import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.comments.UserComments;
+import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.model.rating.UserRating;
+import com.events.eventosUfsm.model.reminder.Reminder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.Email;
@@ -45,6 +48,8 @@ public class User implements UserDetails {
 
     @NotNull
     private String password;
+    @Column(name = "image_user")
+    private String imgUser;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -62,7 +67,12 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRating> ratings;
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Events> createdEvents;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Reminder> reminders;
   @ManyToMany
   @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

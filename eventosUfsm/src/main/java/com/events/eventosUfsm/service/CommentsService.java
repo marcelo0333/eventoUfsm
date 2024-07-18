@@ -34,14 +34,7 @@ public class CommentsService {
            return ResponseEntity.badRequest().build();
        }
     }
-    public List<CommentsDTO> findCommentsByEventId(Long eventId) {
-        List<UserComments> comments = repository.findByEventsEventsId(eventId);
-        return comments.stream().map(comment -> new CommentsDTO(
-                comment.getEvents().getEventsId(),
-                comment.getEvents().getEventName(),
-                comment.getUsers().getFirstName(),
-                comment.getUsers().getLastName(),
-                comment.getContent()
-        )).collect(Collectors.toList());
+    public List<UserComments> findCommentsByEventId(Long eventId) {
+        return repository.findByEventsEventsId(eventId);
     }
 }

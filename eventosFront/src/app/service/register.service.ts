@@ -17,5 +17,7 @@ export class RegisterService {
   register(user: UserModel): Observable<TokensResponse> {
     return this.http.post<TokensResponse>(`${this.apiUrl}/auth/register`, user);
   }
-
+  privilege(user: UserModel): Observable<TokensResponse> {
+    return this.http.post<TokensResponse>(`${this.apiUrl}/auth/privilege`, user);
+  }
 }

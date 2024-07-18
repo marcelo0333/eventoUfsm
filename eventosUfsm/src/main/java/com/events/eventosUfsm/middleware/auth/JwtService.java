@@ -21,31 +21,33 @@ import java.util.function.Function;
 public class JwtService extends JwtContract {
 
   private static final long SET_01_MIN = 60000L;
+  private static final long ACCESS_TOKEN_VALIDITY = SET_01_MIN * 15; // 15 minutos
+  private static final long REFRESH_TOKEN_VALIDITY = SET_01_MIN * 60; // 1 hora
 
   private static final String SECRET_KEY = "DFatenFSYbaa+PaCOygVv8JtOc3d1UPv2BCIIeQ2TwGTA2EuhNQpGhszoUEN2bFR";
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-    return generateToken(extraClaims, userDetails, SET_01_MIN / 2);
+    return generateToken(extraClaims, userDetails, ACCESS_TOKEN_VALIDITY);
   }
 
   public String generateAccessToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails, SET_01_MIN / 2);
+    return generateToken(new HashMap<>(), userDetails, ACCESS_TOKEN_VALIDITY);
   }
 
   public String generateRefreshToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails, SET_01_MIN * 10);
+    return generateToken(new HashMap<>(), userDetails, REFRESH_TOKEN_VALIDITY);
   }
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, long expirationTime) {
     try {
       return Jwts.builder()
-        .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
-        .setIssuer("localhost:9090")
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-        .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-        .compact();
+              .setClaims(extraClaims)
+              .setSubject(userDetails.getUsername())
+              .setIssuer("localhost:9090")
+              .setIssuedAt(new Date(System.currentTimeMillis()))
+              .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+              .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+              .compact();
     } catch (SignatureException | ExpiredJwtException e) {
       Output.fail("Token generation failed: " + e.toString());
       return null;
@@ -68,10 +70,10 @@ public class JwtService extends JwtContract {
   public Claims extractAllClaims(String token) {
     try {
       return Jwts.parserBuilder()
-        .setSigningKey(getSignInKey())
-        .build()
-        .parseClaimsJws(token)
-        .getBody();
+              .setSigningKey(getSignInKey())
+              .build()
+              .parseClaimsJws(token)
+              .getBody();
     } catch (ExpiredJwtException e) {
       Output.fail("Your session has expired. Please log in again.");
       return null;

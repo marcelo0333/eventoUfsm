@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,7 +22,7 @@ public class BookmarksService {
     private final UserBookmarksRepository bookmarksRepository;
     private final UserRepository userRepository;
     private final EventsRepository eventsRepository;
-
+    private final EventsService eventsService;
     public ResponseEntity<?> saveBookmark(Long userId, Long eventId){
         Optional<User> optionalUser =  userRepository.findById(userId);
         if(optionalUser.isEmpty()){
@@ -38,15 +40,26 @@ public class BookmarksService {
                 .build();
         bookmarksRepository.save(userBookmarks1);
 
+        eventsService.updateBookmark(eventId);
         return ResponseEntity.ok("Bookmark accepted");
     }
-    public ResponseEntity<?> wipeBookmark(Long id){
-        if (bookmarksRepository.findById(id).isPresent()) {
-            bookmarksRepository.deleteById(id);
-        }else {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> wipeBookmark(Long userId, Long eventId) {
+        Optional<UserBookmarks> bookmarkOptional = bookmarksRepository.findByUsersUserIdAndEventsEventsId(userId, eventId);
+        if (bookmarkOptional.isPresent()) {
+            bookmarksRepository.delete(bookmarkOptional.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.badRequest().body("Bookmark not found");
         }
-        return ResponseEntity.noContent().build();
     }
 
+    public boolean userHasBookmarked(Long userId, Long eventId) {
+        return bookmarksRepository.existsByUsersUserIdAndEventsEventsId(userId, eventId);
+    }
+    public List<Events> getEventsBookmarked(Long userId) {
+        List<UserBookmarks> bookmarks = bookmarksRepository.findAllByUsersUserId(userId);
+        return bookmarks.stream()
+                .map(UserBookmarks::getEvents)
+                .collect(Collectors.toList());
+    }
 }

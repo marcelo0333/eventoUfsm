@@ -31,7 +31,7 @@ public class CommentsRoute {
 
     @GetMapping("/{id}")
     public ResponseEntity findEventsAndComments(@PathVariable Long id){
-        List<CommentsDTO> comments = service.findCommentsByEventId(id);
+        List<UserComments> comments = service.findCommentsByEventId(id);
         return ResponseEntity.ok(comments);
     }
 }

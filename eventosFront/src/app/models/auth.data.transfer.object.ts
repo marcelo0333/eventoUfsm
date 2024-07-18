@@ -9,12 +9,30 @@ export interface SignInResponse {
   tokens: TokensResponse;
   user: UserModel;
 }
-
+export interface BookmarkDTO{
+  userId?: number;
+  eventId?: bigint;
+}
+export interface Bookmark{
+  id: number;
+  userId?: number;
+  event?: Event;
+}
 export interface LoginDTO {
   email: string,
   password: string,
 }
+export interface ReminderDTO{
+  userId?: number;
+  eventId?: number;
+  reminderTime: Date;
+}
 
+export interface ReminderEventsDTO{
+  reminderId?: number;
+  events?: Event;
+  reminderTime: Date;
+}
 export interface RegisterDTO {
   firstName: string,
   lastName: string,
@@ -32,6 +50,7 @@ export class UserModel {
   public firstName?: string;
   public lastName?: string;
   public email?: string;
+  public role?: string;
 }
 
 

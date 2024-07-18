@@ -63,6 +63,7 @@ export class TokenService {
   }
 
   getRefreshedToken(): Observable<TokensResponse> {
+
     return this.http.post<TokensResponse>(`${this.API}/auth/refresh-token`, { responseType: "json" });
   }
 
@@ -74,22 +75,34 @@ export class TokenService {
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error refreshing token:', error);
+        this.handleSessionExpired();
       }
     });
   }
 
   tokenValid(token: string): boolean {
-    const decodedToken = this.getTokenDecoded(token);
-    return decodedToken?.exp ? (decodedToken.exp * 1000) > Date.now() : false;
+    const decodeToken: JwtPayload | null = jwtDecode(token)
+
+    if (decodeToken?.exp) {
+      return (decodeToken.exp * 2000) > (new Date().getTime());
+    }
+
+    return false;
   }
 
   sessionIsValid(): boolean {
-    const tokens = this.getTokenParsed();
-    const accessToken = tokens?.accessToken;
-    const refreshToken = tokens?.refreshToken;
 
-    const accessTokenValid = accessToken ? this.tokenValid(accessToken) : false;
-    const refreshTokenValid = refreshToken ? this.tokenValid(refreshToken) : false;
+    const accessToken: (string | undefined) = this.getTokenParsed()?.accessToken;
+    const refreshToken: (string | undefined) = this.getTokenParsed()?.refreshToken;
+
+    let accessTokenValid: boolean = false;
+    let refreshTokenValid: boolean = false;
+    const sessionHasFinished = (!accessTokenValid && !refreshTokenValid);
+
+    if (accessToken && refreshToken) {
+      accessTokenValid = this.tokenValid(accessToken);
+      refreshTokenValid = this.tokenValid(refreshToken);
+    }
 
     if (accessTokenValid) {
       return true;
@@ -100,13 +113,19 @@ export class TokenService {
       return true;
     }
 
-    this.handleSessionExpired();
+    if (sessionHasFinished) {
+      this.router.navigate([`login`]);
+      localStorage.removeItem(environment.tokenKey);
+      this.showErrorToast(`Tokens have expired. Session is terminated`); //
+      return false;
+    }
+
     return false;
   }
 
   handleSessionExpired(): void {
-    this.router.navigate(['login']);
     this.removeTokens();
+    this.router.navigate(['login']);
     this.showErrorToast('Tokens have expired. Session is terminated.');
   }
 
@@ -126,4 +145,17 @@ export class TokenService {
     this.toastController.create(toastOptions).then(toast => toast.present());
   }
 
+  getAccessToken(): string | null {
+    const tokenData = localStorage.getItem(environment.tokenKey);
+    if (tokenData) {
+      const parsedToken = JSON.parse(tokenData);
+      return parsedToken.accessToken;
+    }
+    return null;
+  }
+
+  isAdmin(): boolean {
+    const user = this.getUserFromToken();
+    return user ? user.role === 'ADMIN' : false;
+  }
 }

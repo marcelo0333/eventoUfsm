@@ -19,12 +19,12 @@ public class UserBookmarks {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id") // Opcional: especifica o nome da coluna de chave estrangeira
+    @JoinColumn(name = "user_id")
     @JsonIgnore
 
     private User users;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id") // Opcional: especifica o nome da coluna de chave estrangeira
+    @JoinColumn(name = "event_id")
     private Events events;
 }

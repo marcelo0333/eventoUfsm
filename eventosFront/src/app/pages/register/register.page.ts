@@ -13,6 +13,8 @@ import { ToastController } from '@ionic/angular/standalone';
 })
 export class RegisterPage implements OnInit {
   public form!: FormGroup;
+  public imgUser: File | null = null;
+  public isPrivilege: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,7 @@ export class RegisterPage implements OnInit {
   }
 
 
+
   register(): void {
     if (this.form.invalid) {
       this.showErrorToast('Por favor, preencha todos os campos corretamente.');
@@ -48,17 +51,29 @@ export class RegisterPage implements OnInit {
       password: this.form.value.password,
     };
 
-    this.registerService.register(registerDTO).subscribe({
-      next: (response: TokensResponse) => {
-        this.router.navigate(['']);
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Erro ao registrar:', error);
-        this.showErrorToast('Erro ao registrar. Tente novamente mais tarde.');
-      }
-    });
-  }
 
+    if (this.isPrivilege) {
+      this.registerService.privilege(registerDTO).subscribe(
+        response => {
+          console.log('Registro de admin bem-sucedido', response);
+          this.router.navigate(['/login']);
+        },
+        error => {
+          console.error('Erro no registro de admin', error);
+        }
+      );
+    } else {
+      this.registerService.register(registerDTO).subscribe(
+        response => {
+          console.log('Registro de usuário bem-sucedido', response);
+          this.router.navigate(['/login']);
+        },
+        error => {
+          console.error('Erro no registro de usuário', error);
+        }
+      );
+    }
+  }
 
   private showErrorToast(message: string): void {
     this.toastController.create({

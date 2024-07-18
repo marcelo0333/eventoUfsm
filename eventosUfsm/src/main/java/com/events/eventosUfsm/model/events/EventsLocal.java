@@ -20,10 +20,11 @@ public class EventsLocal {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "local_id")
+
     private Local local;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "event_id")
     private Events events;
 }

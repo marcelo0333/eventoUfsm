@@ -20,7 +20,11 @@
             <ion-input formControlName="email" type="email" label="E-mail" labelPlacement="floating" placeholder="Insira o E-mail"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input formControlName="password"  type="password" label="Senha" labelPlacement="floating" placeholder="Senha"></ion-input>
+            <ion-input formControlName="password" type="password" label="Senha" labelPlacement="floating" placeholder="Senha"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-checkbox [(ngModel)]="isPrivilege" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            <ion-label>Registrar como admin</ion-label>
           </ion-item>
           <ion-button shape="round" size="full" (click)="register()">Cadastrar</ion-button>
           <ion-label class="ion-text-nowrap">

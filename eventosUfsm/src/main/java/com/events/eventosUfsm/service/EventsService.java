@@ -1,100 +1,222 @@
 package com.events.eventosUfsm.service;
 
+import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.model.rating.UserRating;
+import com.events.eventosUfsm.model.user.User;
 import com.events.eventosUfsm.repository.*;
 //import com.events.eventosUfsm.repository.UserCommentsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class EventsService {
     private final EventsRepository repository;
     private final UserRatingRepository ratingRepository;
-  public Page<Events> findAllOrderByDate() {
+    private final EventsLocalService eventsLocalService;
+    private final UserRepository userRepository;
+    private final UserBookmarksRepository bookmarksRepository;
 
-    Pageable pageable = PageRequest.of(
-      0,
-      10,
-      Sort.Direction.DESC,
-      "dateInitial"
-    );
+    @Value("${app.image-directory}")
+    private String imageDirectory;
 
-    return repository.findAll(pageable);
-  }
+    public Page<Events> findAllOrderByDate() {
+        Pageable pageable = PageRequest.of(
+                0,
+                10,
+                Sort.Direction.DESC,
+                "dateInitial"
+        );
+        return repository.findAll(pageable);
+    }
+    public Page<Events> findAllOrderByBookmarks() {
+        Pageable pageable = PageRequest.of(
+                0,
+                10,
+                Sort.Direction.DESC,
+                "totalBookmarks"
+        );
 
-  public ResponseEntity<?> findById(Long id){
+        return repository.findEventsByTotalBookmarksIsNotNull(pageable);
+    }
+    public List<Events> typeEvents(String type) {
+        return repository.findByTypeEvent(type);
+    }
+
+    public List<Events> searchEvents(String query) {
+        return repository.findByEventNameContainingIgnoreCase(query);
+    }
+
+    public ResponseEntity<?> findById(Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(repository.findById(id));
     }
-    public ResponseEntity<?> findAllEvents(){
+
+    public ResponseEntity<?> findAllEvents() {
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.findAll());
     }
-    public ResponseEntity<?> saveEvent(Events events) {
-        Events events1 = Events.builder()
-                .imgEvent(events.getImgEvent())
-                .eventName(events.getEventName())
-                .centerName(events.getCenterName())
-                .contact(events.getContact())
-                .comments(events.getComments())
-                .description(events.getDescription())
-                .dateInitial(events.getDateInitial())
-                .dateFinal(events.getDateFinal())
-                .build();
 
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(repository.save(events1));
+    public String saveImage(MultipartFile imgEvent) throws IOException {
+        Path directoryPath = Paths.get(imageDirectory);
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+        String fileExtension = getFileExtension(imgEvent.getOriginalFilename());
+        String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+        Path filePath = directoryPath.resolve(uniqueFileName);
+        Files.copy(imgEvent.getInputStream(), filePath);
+        return "http://localhost:9090/api/images/" + uniqueFileName;
     }
-    public ResponseEntity<?> editEvent(Events events) {
-        Optional<Events> existingEventOptional = repository.findById(events.getEventsId());
 
-        if (existingEventOptional.isPresent()) {
-            var updateEvent = Events.builder()
-                    .eventsId(events.getEventsId())
-                    .imgEvent(events.getImgEvent())
-                    .eventName(events.getEventName())
-                    .centerName(events.getCenterName())
-                    .contact(events.getContact())
-                    .comments(events.getComments())
-                    .localSet(events.getLocalSet())
-                    .description(events.getDescription())
-                    .dateInitial(events.getDateInitial())
-                    .dateFinal(events.getDateFinal())
+    private String getFileExtension(String fileName) {
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            extension = fileName.substring(i + 1);
+        }
+        return extension;
+    }
+
+    public ResponseEntity<?> saveEvent(String eventName,
+                                       MultipartFile imgEvent,
+                                       String typeEvent,
+                                       String description,
+                                       String dateInitial,
+                                       String dateFinal,
+                                       String centerName,
+                                       String contact,
+                                       Long userId,
+                                       Set<Long> localIds) {
+        try {
+            String imgEventUrl = saveImage(imgEvent);
+
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+            }
+            User user = optionalUser.get();
+            Events events = Events.builder()
+                    .eventName(eventName)
+                    .imgEvent(imgEventUrl)
+                    .typeEvent(typeEvent)
+                    .description(description)
+                    .dateInitial(Date.valueOf(dateInitial))
+                    .dateFinal(Date.valueOf(dateFinal))
+                    .centerName(centerName)
+                    .createdBy(user)
+                    .contact(contact)
                     .build();
 
-            return ResponseEntity.status(HttpStatus.OK).body(repository.save(updateEvent));
+            repository.save(events);
+            eventsLocalService.associateEventWithLocals(events.getEventsId(), localIds);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Evento criado com sucesso!");
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar a imagem do evento.");
+        }
+    }
+
+    public ResponseEntity<?> editEvent(Long eventId,
+                                       String eventName,
+                                       MultipartFile imgEvent,
+                                       String typeEvent,
+                                       String description,
+                                       String dateInitial,
+                                       String dateFinal,
+                                       String centerName,
+                                       String contact,
+                                       Long userId,
+                                       Set<Long> localIds) {
+        Optional<Events> existingEventOptional = repository.findById(eventId);
+
+        if (existingEventOptional.isPresent()) {
+            try {
+                String imgEventUrl = saveImage(imgEvent);
+
+                Optional<User> optionalUser = userRepository.findById(userId);
+                if (optionalUser.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+                }
+                User user = optionalUser.get();
+                Events events = Events.builder()
+                        .eventsId(eventId)
+                        .eventName(eventName)
+                        .imgEvent(imgEventUrl)
+                        .typeEvent(typeEvent)
+                        .description(description)
+                        .dateInitial(Date.valueOf(dateInitial))
+                        .dateFinal(Date.valueOf(dateFinal))
+                        .centerName(centerName)
+                        .createdBy(user)
+                        .contact(contact)
+                        .build();
+
+                repository.save(events);
+                eventsLocalService.associateEventWithLocals(events.getEventsId(), localIds);
+
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Evento editado com sucesso!");
+                return ResponseEntity.ok(response);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar a imagem do evento.");
+            }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    public ResponseEntity<?> wipeEvent(Long id){
+
+    public ResponseEntity<?> wipeEvent(Long id) {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
-        }else {
+        } else {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.noContent().build();
     }
 
-    public void updateRating(Long eventId){
+    public boolean hasCreate(Long userId, Long eventId) {
+        return repository.existsByCreatedBy_UserIdAndEventsId(userId, eventId);
+    }
+
+    public void updateRating(Long eventId) {
         List<UserRating> ratings = ratingRepository.findAllByEvents_EventsId(eventId);
-        if (!ratings.isEmpty()){
+        if (!ratings.isEmpty()) {
             Double average = ratings.stream()
                     .mapToInt(UserRating::getRating)
                     .average()
                     .orElse(0.0);
             Events events = repository.findById(eventId)
-                    .orElseThrow(()-> new IllegalArgumentException("Invalid event id "+eventId));
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid event id " + eventId));
             events.setAverageRating(average);
             repository.save(events);
+        }
+    }
+
+    public void updateBookmark(Long eventId) {
+        List<UserBookmarks> bookmarks = bookmarksRepository.findAllByEvents_EventsId(eventId);
+        if (!bookmarks.isEmpty()) {
+            int totalBookmarks = bookmarks.size();
+            Events event = repository.findById(eventId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid event id " + eventId));
+            event.setTotalBookmarks(totalBookmarks);
+            repository.save(event);
         }
     }
 }
