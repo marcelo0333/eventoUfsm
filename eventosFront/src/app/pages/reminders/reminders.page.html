@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Lembretes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
+  <ion-list>
+    <ion-item *ngFor="let reminder of reminders">
+      <ion-card style="height: 300px; width: 300px;" class="event-card">
+        <img [alt]="reminder.events?.eventName" [src]="reminder.events?.imgEvent" style="height: 150px; width: 100%;" />
+        <ion-card-header style="padding: 10px;">
+          <ion-card-title>{{ reminder.events?.eventName }}</ion-card-title>
+          <ion-card-subtitle>{{ reminder.events?.centerName }}</ion-card-subtitle>
+          <p>Reminder Time: {{ reminder.reminderTime | date: 'short' }}</p>
+        </ion-card-header>
+      </ion-card>
+      <ion-button color="danger" size="large" (click)="deleteReminder(reminder.reminderId)">
+      <ion-icon name="trash" ></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

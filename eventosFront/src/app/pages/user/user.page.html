@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Usuário</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="logout()">Sair</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="ion-text-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="6">
+        <ion-avatar class="center-avatar">
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <h1>Olá {{userModel?.firstName}} {{userModel?.lastName}}</h1>
+        <h3>Seu e-mail {{userModel?.email}}</h3>
+        <ion-button (click)="openEditModal()">Editar</ion-button>
+        <ion-button *ngIf="isAdmin" (click)="openCreateEventModal()">Criar Evento</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Usuário</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="form">
+          <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input formControlName="firstName"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Sobrenome</ion-label>
+            <ion-input formControlName="lastName"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input formControlName="email" type="email"></ion-input>
+          </ion-item>
+          <ion-button expand="full" (click)="edit()">Salvar</ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

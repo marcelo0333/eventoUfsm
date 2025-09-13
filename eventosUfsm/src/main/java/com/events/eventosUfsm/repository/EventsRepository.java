@@ -17,8 +17,9 @@ import java.util.List;
 public interface EventsRepository extends JpaRepository<Events, Long> {
 
     List<Events> findByEventNameContainingIgnoreCase(String query);
-//    @Query(value = "SELECT * FROM events WHERE events.type_event = ?1", nativeQuery = true)
-    List<Events> findByTypeEvent(String typeEvent);
+
+    @Query(value = "SELECT * FROM events WHERE events.type_id = ?1", nativeQuery = true)
+    List<Events> findEventsByType_Event(Long typeEvent);
 
     Page<Events> findEventsByTotalBookmarksIsNotNull(Pageable pageable);
     boolean existsByCreatedBy_UserIdAndEventsId(Long userId, Long eventId);

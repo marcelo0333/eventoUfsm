@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configurar Lembrete</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="reminderForm" (ngSubmit)="setReminder()">
+    <ion-item lines="full">
+      <ion-label>Data e Hora do Lembrete</ion-label>
+      <ion-datetime formControlName="reminderDateTime"
+                    displayFormat="DD/MM/YYYY HH:mm"
+                    min="{{minDateTime}}"
+                    max="{{dateFinal}}"
+                    cancelText="Cancelar"
+                    doneText="Selecionar"
+        >
+      </ion-datetime>
+    </ion-item>
+    <ion-button expand="full" type="submit" [disabled]="reminderForm.invalid">Salvar Lembrete</ion-button>
+  </form>
+</ion-content>

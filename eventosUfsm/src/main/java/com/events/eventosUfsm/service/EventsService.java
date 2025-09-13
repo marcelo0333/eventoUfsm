@@ -3,6 +3,8 @@ package com.events.eventosUfsm.service;
 import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.model.rating.UserRating;
+import com.events.eventosUfsm.model.types.TypeEvents;
+import com.events.eventosUfsm.model.types.TypeEventsRepository;
 import com.events.eventosUfsm.model.user.User;
 import com.events.eventosUfsm.repository.*;
 //import com.events.eventosUfsm.repository.UserCommentsRepository;
@@ -31,6 +33,7 @@ public class EventsService {
     private final EventsLocalService eventsLocalService;
     private final UserRepository userRepository;
     private final UserBookmarksRepository bookmarksRepository;
+    private final TypeEventsRepository typeEventsRepository;
 
     @Value("${app.image-directory}")
     private String imageDirectory;
@@ -54,8 +57,8 @@ public class EventsService {
 
         return repository.findEventsByTotalBookmarksIsNotNull(pageable);
     }
-    public List<Events> typeEvents(String type) {
-        return repository.findByTypeEvent(type);
+    public List<Events> typeEvents(Long type) {
+        return repository.findEventsByType_Event(type);
     }
 
     public List<Events> searchEvents(String query) {
@@ -94,7 +97,7 @@ public class EventsService {
 
     public ResponseEntity<?> saveEvent(String eventName,
                                        MultipartFile imgEvent,
-                                       String typeEvent,
+                                       Long typeEvent,
                                        String description,
                                        String dateInitial,
                                        String dateFinal,
@@ -105,6 +108,11 @@ public class EventsService {
         try {
             String imgEventUrl = saveImage(imgEvent);
 
+            Optional<TypeEvents> optionalType = typeEventsRepository.findById(typeEvent);
+            if (optionalType.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo de evento não encontrado.");
+            }
+            TypeEvents typeEventDB = optionalType.get();
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
@@ -113,7 +121,7 @@ public class EventsService {
             Events events = Events.builder()
                     .eventName(eventName)
                     .imgEvent(imgEventUrl)
-                    .typeEvent(typeEvent)
+                    .type(typeEventDB)
                     .description(description)
                     .dateInitial(Date.valueOf(dateInitial))
                     .dateFinal(Date.valueOf(dateFinal))
@@ -136,7 +144,7 @@ public class EventsService {
     public ResponseEntity<?> editEvent(Long eventId,
                                        String eventName,
                                        MultipartFile imgEvent,
-                                       String typeEvent,
+                                       Long typeEvent,
                                        String description,
                                        String dateInitial,
                                        String dateFinal,
@@ -150,6 +158,11 @@ public class EventsService {
             try {
                 String imgEventUrl = saveImage(imgEvent);
 
+                Optional<TypeEvents> optionalType = typeEventsRepository.findById(typeEvent);
+                if (optionalType.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo de evento não encontrado.");
+                }
+                TypeEvents typeEventDB = optionalType.get();
                 Optional<User> optionalUser = userRepository.findById(userId);
                 if (optionalUser.isEmpty()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
@@ -159,7 +172,7 @@ public class EventsService {
                         .eventsId(eventId)
                         .eventName(eventName)
                         .imgEvent(imgEventUrl)
-                        .typeEvent(typeEvent)
+                        .type(typeEventDB)
                         .description(description)
                         .dateInitial(Date.valueOf(dateInitial))
                         .dateFinal(Date.valueOf(dateFinal))

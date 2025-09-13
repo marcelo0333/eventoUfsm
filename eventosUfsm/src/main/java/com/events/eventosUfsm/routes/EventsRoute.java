@@ -1,19 +1,14 @@
 package com.events.eventosUfsm.routes;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.events.eventosUfsm.model.comments.CommentsDTO;
-import com.events.eventosUfsm.model.comments.UserComments;
+
 import com.events.eventosUfsm.model.events.EventLocalAssociationDTO;
 import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.service.EventsLocalService;
 import com.events.eventosUfsm.service.EventsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +43,9 @@ public class EventsRoute {
         return ResponseEntity.ok(events);
      }
     @GetMapping("/type")
-    public ResponseEntity<List<Events>> typeEvents(@RequestParam String type){
+    public ResponseEntity<List<Events>> typeEvents(@RequestParam Long type){
         List<Events> events = service.typeEvents(type);
-        System.out.println(events+type);
+        System.out.println(events);
         return ResponseEntity.ok(events);
     }
     @GetMapping
@@ -68,7 +63,7 @@ public class EventsRoute {
     public ResponseEntity<?> saveEvent(
             @RequestParam("eventName") String eventName,
             @RequestParam("imgEvent") MultipartFile imgEvent,
-            @RequestParam("typeEvent") String typeEvent,
+            @RequestParam("typeEvent") Long typeEvent,
             @RequestParam("description") String description,
             @RequestParam("dateInitial") String dateInitial,
             @RequestParam("dateFinal") String dateFinal,
@@ -89,7 +84,7 @@ public class EventsRoute {
     public ResponseEntity putEvent( @RequestParam("eventId") Long eventId,
                                     @RequestParam("eventName") String eventName,
                                     @RequestParam("imgEvent") MultipartFile imgEvent,
-                                    @RequestParam("typeEvent") String typeEvent,
+                                    @RequestParam("typeEvent") Long typeEvent,
                                     @RequestParam("description") String description,
                                     @RequestParam("dateInitial") String dateInitial,
                                     @RequestParam("dateFinal") String dateFinal,
@@ -106,7 +101,7 @@ public class EventsRoute {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity wipeEvent(@RequestParam Long id){
+    public ResponseEntity<?> wipeEvent(@RequestParam Long id){
         return service.wipeEvent(id);
     }
 

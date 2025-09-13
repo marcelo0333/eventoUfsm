@@ -1,6 +1,5 @@
 package com.events.eventosUfsm.routes;
 
-import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.model.user.BookmarksDTO;
 import com.events.eventosUfsm.service.BookmarksService;

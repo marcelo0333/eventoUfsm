@@ -11,7 +11,7 @@ public class EventosUfsmApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EventosUfsmApplication.class, args);
-
+		System.out.println("modificacao");
 	}
 
 }

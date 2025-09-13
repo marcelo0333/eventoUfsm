@@ -25,26 +25,33 @@ export class HomePagePage implements AfterViewInit, OnInit {
     {
       imgAsset: '../../../assets/icon/concerts.png',
       CategoryName: 'Culturais',
+      id: 5,
+
     },
     {
       imgAsset: '../../../assets/icon/light.png',
       CategoryName: 'Técnico-Científicos',
+      id: 1,
     },
     {
       imgAsset: '../../../assets/icon/theater.png',
       CategoryName: 'Artísticos',
+      id: 2,
     },
     {
       imgAsset: '../../../assets/icon/work-team.png',
       CategoryName: 'Profissionais',
+      id: 7,
     },
     {
       imgAsset: '../../../assets/icon/training.png',
       CategoryName: 'Oficiais',
+      id: 4,
     },
     {
       imgAsset: '../../../assets/icon/fair-trade.png',
       CategoryName: 'Sociais',
+      id: 3,
 
     },
   ];
@@ -140,9 +147,9 @@ export class HomePagePage implements AfterViewInit, OnInit {
     this.router.navigate(['/events', eventsId]);
   }
 
-  goToCategory(typeEvent: string) {
-    console.log(typeEvent);
-    this.router.navigate(['tabs/category', typeEvent]);
+  goToCategory(id: bigint) {
+    console.log(id);
+    this.router.navigate(['tabs/category', id]);
   }
   doRefresh(event: any): void {
     this.loadEvents();

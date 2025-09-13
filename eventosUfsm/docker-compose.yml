@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  # Serviço da aplicação Spring Boot
+  app:
+    build: .
+    container_name: eventosUfsm-app
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/eventsDB
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+    networks:
+      - eventos_network
+
+  db:
+    image: postgres:13
+    container_name: eventosUfsm-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=eventsDB
+    ports:
+      - "5432:5433"
+    networks:
+      - eventos_network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+# Redes usadas pelos containers
+networks:
+  eventos_network:
+    driver: bridge
+
+# Volumes persistentes
+volumes:
+  postgres-data:

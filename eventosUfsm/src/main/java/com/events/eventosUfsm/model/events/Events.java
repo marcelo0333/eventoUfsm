@@ -3,6 +3,7 @@ package com.events.eventosUfsm.model.events;
 import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.comments.UserComments;
 import com.events.eventosUfsm.model.reminder.Reminder;
+import com.events.eventosUfsm.model.types.TypeEvents;
 import com.events.eventosUfsm.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,8 +35,7 @@ public class Events {
     private String contact;
     @Column(name = "center_name")
     private String centerName;
-    @Column(name = "type_event")
-    private String typeEvent;
+
     private String description;
     @Column(name = "event_name")
     private String eventName;
@@ -58,6 +58,11 @@ public class Events {
     @JsonIgnore
     @OneToMany(mappedBy = "events", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<EventsLocal> localSet;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id", nullable = true)
+    private TypeEvents type;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
