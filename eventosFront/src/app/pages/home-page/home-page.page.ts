@@ -101,7 +101,6 @@ export class HomePagePage implements AfterViewInit, OnInit {
         this.events = data;
         console.log('Eventos carregados:', this.events);
         this.loading = false;
-        this.initializeSwiper();
       },
       (error) => {
         this.loading = false;
@@ -113,7 +112,6 @@ export class HomePagePage implements AfterViewInit, OnInit {
         this.eventsBookmarks = data;
         console.log('Eventos carregados:', this.eventsBookmarks);
         this.loading = false;
-        this.initializeSwiper();
       },
       (error) => {
         this.loading = false;
@@ -122,27 +120,14 @@ export class HomePagePage implements AfterViewInit, OnInit {
     );
   }
 
-  initializeSwiper(): void {
-    const swiper = new Swiper('.swiper-container', {
-      loop: true,
-      initialSlide: 0,
-      speed: 400,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-    });
-  }
 
   swiperSlideChanged(e: any): void {
     console.log('Slide alterado:', e);
   }
 
   ngAfterViewInit(): void {
-    this.initializeSwiper();
   }
-
-  goToEventDetails(eventsId: bigint) {
+    goToEventDetails(eventsId: bigint) {
     console.log(eventsId);
     this.router.navigate(['/events', eventsId]);
   }

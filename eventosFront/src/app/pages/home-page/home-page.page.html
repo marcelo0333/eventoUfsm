@@ -15,26 +15,9 @@
     </ion-refresher-content>
   </ion-refresher>
   <h2 style="padding: 5px;">Eventos mais recentes</h2>
-  <swiper-container
-    (slidechange)="swiperSlideChanged($event)"
-    [loop]="true"
-    [pagination]="{
-      clickable: true
-    }"
-    [slidesPerView]="1.2"
-    [spaceBetween]="1">
-  <swiper-slide *ngFor="let event of events" style="padding: 20px;" (click)="goToEventDetails(event.eventsId)">
-    <ion-card class="event-card">
-      <img [alt]="event.eventName" [src]="event?.imgEvent" style="height: 150px; width: 100%;" />
-      <ion-card-header style="padding: 10px;">
-        <ion-card-title>{{ event?.eventName }}</ion-card-title>
-        <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
-      </ion-card-header>
-  </ion-card>
-  </swiper-slide>
-</swiper-container>
-<swiper-container
+    <app-slides [events]="events" [title]="'recentes'"></app-slides>
 
+<swiper-container
     (slidechange)="swiperSlideChanged($event)"
     [loop]="true"
     [pagination]="true"
@@ -49,24 +32,8 @@
 </swiper-container>
 
 <h2 style="padding: 5px;">Eventos mais favoritados</h2>
-  <swiper-container
-    (slidechange)="swiperSlideChanged($event)"
-    [loop]="true"
-    [pagination]="{
-      clickable: true
-    }"
-    [slidesPerView]="1.2"
-    [spaceBetween]="1">
-  <swiper-slide *ngFor="let events of eventsBookmarks" style="padding: 20px;" (click)="goToEventDetails(events.eventsId)">
-    <ion-card class="event-card">
-      <img [alt]="events.eventName" [src]="events.imgEvent" style="height: 150px; width: 100%;" />
-      <ion-card-header style="padding: 10px;">
-        <ion-card-title>{{ events.eventName }}</ion-card-title>
-        <ion-card-subtitle>{{ events.centerName }}</ion-card-subtitle>
-      </ion-card-header>
-  </ion-card>
-  </swiper-slide>
-</swiper-container>
+
+<app-slides [eventsBookmarks]="eventsBookmarks" [title]="'bookmarks'"></app-slides>
 
 
 </ion-content>

@@ -4,12 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HomePagePageRoutingModule } from './home-page-routing.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HomePagePage } from './home-page.page';
 import {ExploreContainerComponentModule} from "../../explore-container/explore-container.module";
-import { SlidesComponent } from 'src/app/components/slides/slides.component';
-import { SlidesModule } from 'src/app/components/slides/slide.module';
+import { SlidesComponent } from './slides.component';
 
 @NgModule({
   imports: [
@@ -17,12 +14,11 @@ import { SlidesModule } from 'src/app/components/slides/slide.module';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    HomePagePageRoutingModule,
     ExploreContainerComponentModule,
-    SlidesModule
-  ],
-  declarations: [HomePagePage],
+],
+  declarations: [SlidesComponent],
+  exports: [SlidesComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
 })
-export class HomePagePageModule {}
+export class SlidesModule {}
