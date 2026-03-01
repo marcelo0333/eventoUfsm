@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EventosUfsmApplication<eventosUfsm>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.events.eventosUfsm.EventosUfsmApplication",
+            "projectName": "eventosUfsm",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
