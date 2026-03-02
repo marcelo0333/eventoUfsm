@@ -10,25 +10,25 @@ import java.io.IOException;
 @Service
 public class EventScrapperService {
 
-    //@Value("${scrapper.script.path}")
+    @Value("${scrapper.script.path}")
     private String scriptPath;
 
-    //@Value("${scrapper.working.dir}")
+    @Value("${scrapper.working.dir}")
     private String workingDir;
 
     @Scheduled(fixedRate = 3600000)
     public void scrapeEvents() {
+        if (scriptPath == null || workingDir == null) {
+            System.err.println("Propriedades scrapper.script.path ou scrapper.working.dir não configuradas.");
+            return;
+        }
+        new Thread(() -> {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("npx", "tsx", scriptPath);
-
             processBuilder.directory(new File(workingDir));
-
             processBuilder.inheritIO();
-
             Process process = processBuilder.start();
-
             int exitCode = process.waitFor();
-
             if (exitCode == 0) {
                 System.out.println("Script getEvents.ts executado com sucesso.");
             } else {
@@ -38,5 +38,6 @@ public class EventScrapperService {
             Thread.currentThread().interrupt();
             e.printStackTrace();
         }
+        }).start();
     }
 }
