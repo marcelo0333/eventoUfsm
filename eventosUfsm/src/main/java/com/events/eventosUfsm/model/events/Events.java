@@ -35,7 +35,9 @@ public class Events {
     private String contact;
     @Column(name = "center_name")
     private String centerName;
-
+    @Column(name = "link")
+    private String link;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @Column(name = "event_name")
     private String eventName;
