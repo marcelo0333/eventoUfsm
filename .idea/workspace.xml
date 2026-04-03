@@ -9,7 +9,17 @@
     </loaded-modules>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="fix: bug commit">
+    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="feat: new classes">
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserInteractionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserPreferencesRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserInteractionRoute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserPreferencesRoute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserInteractionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserPreferencesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/keyword/Keywords.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/keyword/Keywords.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userInteraction/UserInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userInteraction/UserInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userPreferences/UserPreferences.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userPreferences/UserPreferences.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" afterDir="false" />
     </list>
@@ -49,6 +59,7 @@
       <list>
         <option value="Record" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -153,7 +164,9 @@
       <recent name="D:\projeto_integrador\eventosUfsm\eventosUfsm\src\app\service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.events.eventosUfsm.routes" />
       <recent name="com.events.eventosUfsm.service" />
+      <recent name="com.events.eventosUfsm.repository" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.EventosUfsmApplication">
@@ -224,7 +237,7 @@
       <workItem from="1718655295757" duration="30319000" />
       <workItem from="1775071662555" duration="3390000" />
       <workItem from="1775152017981" duration="9748000" />
-      <workItem from="1775241713605" duration="696000" />
+      <workItem from="1775241713605" duration="6186000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bug commit">
       <created>1718685738100</created>
@@ -241,7 +254,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775242398904</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: new classes">
+      <option name="closed" value="true" />
+      <created>1775242814465</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775242814465</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +288,8 @@
       <path value="$PROJECT_DIR$/eventosUfsm" />
     </ignored-roots>
     <MESSAGE value="fix: bug commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: bug commit" />
+    <MESSAGE value="feat: new classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: new classes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -2,9 +2,15 @@ package com.events.eventosUfsm.model.userPreferences;
 
 import com.events.eventosUfsm.model.user.User;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "user_preferences")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Setter
+@Getter
 public class UserPreferences {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
