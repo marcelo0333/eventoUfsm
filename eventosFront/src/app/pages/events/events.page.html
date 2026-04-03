@@ -34,8 +34,8 @@
   <div class="localization">
     <ion-icon size="large" name="location"></ion-icon>
     <div class="text-container">
-      <p>Local: {{local.nameLocal}}</p>
-      <p>{{local.address}}, {{local.city}} {{local.cep}}</p>
+      <p>Local: {{local?.nameLocal}}</p>
+      <p>{{local?.address}}, {{local?.city}}</p>
     </div>
   </div>
   <br>
@@ -49,14 +49,14 @@
   <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
  <div>
       <h1 class="event-title">Descrição</h1>
-      <p style="margin:10px">{{event.description}}</p>
+      <p style="margin:19px">{{event.description}}</p>
  </div>
   <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
   <h1 class="event-title">Local</h1>
   <div id="map" style="height: 300px; width: 100%; padding: 20px;"></div>
   <div class="center-title">
-      <h2 class="center-title">Local: {{local.nameLocal}}</h2>
-      <h2 class="center-title">{{local.address}}, {{local.city}} {{local.cep}}</h2>
+      <h2 class="center-title">Local: {{local?.nameLocal}}</h2>
+      <h2 class="center-title">{{local?.address}}, {{local?.city}}</h2>
   </div>
   <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
 <div>
@@ -154,10 +154,3 @@
     </ng-template>
   </ion-modal>
 </ion-content>
-
-
-<ion-footer >
-  <ion-toolbar>
-    <ion-title>Footer</ion-title>
-  </ion-toolbar>
-</ion-footer>

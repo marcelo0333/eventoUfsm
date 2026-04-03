@@ -13,11 +13,11 @@ export const routes: Routes = [
         loadChildren: () => import('../home-page/home-page.module').then(m => m.HomePagePageModule)
       },
       {
-        path: 'tab2',
+        path: 'bookmarks',
         loadChildren: () => import('../filter-item/filter-item.module').then(m => m.FilterItemPageModule)
       },
       {
-        path: 'tab3',
+        path: 'reminders',
         loadChildren: () => import('../reminders/reminders.module').then(m => m.RemindersPageModule)
       },
       {

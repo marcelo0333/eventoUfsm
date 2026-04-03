@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ModalController, ToastController} from "@ionic/angular";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ReminderModalComponent} from "../reminder-modal/reminder-modal.component";
+import { MapsService } from 'src/app/service/maps.service';
 
 @Component({
   selector: 'app-events',
@@ -91,37 +92,14 @@ export class EventsPage implements OnInit, AfterViewInit {
     }
   }
 
-  getLocal() {
-    const eventId = this.route.snapshot.paramMap.get('id');
-    if (eventId) {
-      this.eventService.getEventAndLocal(eventId).subscribe(
-        (res: Local) => {
-          this.local = res;
-          this.initMap();
-        },
-        (error) => {
-          console.error('Erro ao carregar local:', error);
-        }
-      );
-    }
-  }
-  loadLocals(): void {
-    this.eventService.getLocal().subscribe(
-      (data: Local[]) => {
-        this.locals = data;
-      },
-      () => {
-        console.error();
-      }
-    );
-  }
+
   ngAfterViewInit() {
     this.breakTitleIntoChunks();
   }
 
   private breakTitleIntoChunks() {
     const titleElement = document.getElementById('eventTitle');
-    if (titleElement && this.event) {
+    if (titleElement && this.event?.eventName) {
       const words = this.event.eventName.split(' ');
       let formattedTitle = '';
       for (let i = 0; i < words.length; i++) {
@@ -133,32 +111,33 @@ export class EventsPage implements OnInit, AfterViewInit {
       titleElement.innerHTML = formattedTitle.trim();
     }
   }
-
-  private initMap() {
-    const mapElement = document.getElementById('map');
-    if (mapElement) {
-      let lat = parseFloat(this.local?.latitude);
-      let lng = parseFloat(this.local?.longitude);
-
-      if (isNaN(lat) || isNaN(lng)) {
-        console.warn('Coordenadas inválidas:', lat, lng, '. Usando coordenadas padrão.');
-        lat = -29.7199611;
-        lng = -53.7151194;
-      }
-
-      const map = L.map(mapElement).setView([lat, lng], 13);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
-
-      L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup(this.local?.nameLocal || 'Local padrão')
-        .openPopup();
+  getLocal() {
+    const eventId = this.route.snapshot.paramMap.get('id');
+    if (eventId) {
+      this.eventService.getEventAndLocal(eventId).subscribe(
+        (res: Local) => {
+          this.local = res;
+          console.log(res)
+          const mapsService = new MapsService(this.local);
+          mapsService.initMap();
+        },
+        (error) => {
+          console.error('Erro ao carregar local:', error);
+        }
+      );
     }
   }
-
+  loadLocals(): void {
+    this.eventService.getLocal().subscribe(
+      (data: Local[]) => {
+        this.locals = data;
+        console.log("local",this.locals)
+      },
+      () => {
+        console.error();
+      }
+    );
+  }
   saveBookmark() {
     if (this.user && this.event) {
       const bookmark: BookmarkDTO = {

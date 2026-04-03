@@ -6,11 +6,26 @@
   <component name="AutomaticModuleUnloader">
     <loaded-modules>
       <module name="eventosUfsm" />
-      <module name="eventosFront" />
     </loaded-modules>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="fix: bug commit" />
+    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="fix: bug commit">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs.page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +61,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -69,6 +85,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;marcelo0333&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/marcelo0333/eventoUfsm.git&quot;,
+    &quot;accountId&quot;: &quot;8333e4a8-7960-44a4-8d87-102c7b3924fb&quot;
+  }
+}</component>
   <component name="JsBowerSettings">
     <bower-package value="" />
     <bower.json value="" />
@@ -76,53 +104,54 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2htKDYMpH1Ua1HYTXT1I8g6CCJr" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "jdk.selected.JAVA_MODULE": "openjdk-20",
-    "last_opened_file_path": "D:/projeto_integrador/eventosFront/src/app/service",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "spring.configuration.checksum": "adf1ad5b5332039b381e6704f0a16f56",
-    "ts.external.directory.path": "D:\\projeto_integrador\\eventosFront\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EventosUfsmApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-20&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/projeto_integrador/eventoUfsm&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;adf1ad5b5332039b381e6704f0a16f56&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\programas\\IntelliJ IDEA 2025.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\projeto_integrador\eventosFront\src\app\service" />
@@ -181,6 +210,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -198,6 +235,9 @@
       <workItem from="1718549721122" duration="1963000" />
       <workItem from="1718573697327" duration="10792000" />
       <workItem from="1718655295757" duration="30319000" />
+      <workItem from="1775071662555" duration="3390000" />
+      <workItem from="1775152017981" duration="9748000" />
+      <workItem from="1775241713605" duration="593000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bug commit">
       <created>1718685738100</created>
@@ -213,6 +253,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnloadedModulesList">
+    <module name="eventoUfsm" />
     <module name="projeto_integrador" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

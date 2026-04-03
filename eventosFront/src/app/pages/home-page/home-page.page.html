@@ -18,11 +18,10 @@
     <app-slides [events]="events" [title]="'recentes'"></app-slides>
 
 <swiper-container
-    (slidechange)="swiperSlideChanged($event)"
     [loop]="true"
     [pagination]="true"
     [slidesPerView]="2.5"
-    [spaceBetween]="0.5">
+    [spaceBetween]="12">
   <swiper-slide *ngFor="let category of categorys" class="swiper-slide-custom">
     <ion-button size="large" shape="round" (click)="goToCategory(category.id)">
       <img [src]="category.imgAsset" class="category-img">

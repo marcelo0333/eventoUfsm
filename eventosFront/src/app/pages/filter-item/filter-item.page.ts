@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Event } from "../../models/events.model";
 import { TokenService } from "../../service/auth.token.service";
 import {Bookmark} from "../../models/auth.data.transfer.object";
+import { CATEGORIES } from 'src/app/constants/categories.constant';
 
 @Component({
   selector: 'app-filter-item',
@@ -15,7 +16,7 @@ export class FilterItemPage implements OnInit {
   categoryType!: string;
   events: (Event | undefined)[] = [];
   userBookmarks: Bookmark[] = [];
-
+  category: any;
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
@@ -27,6 +28,7 @@ export class FilterItemPage implements OnInit {
     this.route.paramMap.subscribe(params => {
       if (params.get('typeEvent')) {
         this.categoryType = params.get('typeEvent')!;
+        this.category = CATEGORIES.find(cat => cat.id.toString() === this.categoryType);
         this.loadEventsByCategory();
       } else {
         const userId = this.tokenService.getUserFromToken()?.userId;

@@ -7,6 +7,7 @@ import { TokenService } from "../../service/auth.token.service";
 import { UserModel } from "../../models/auth.data.transfer.object";
 import { FormControl } from "@angular/forms";
 import { debounceTime } from "rxjs";
+import { CATEGORIES } from 'src/app/constants/categories.constant';
 
 @Component({
   selector: 'app-home-page',
@@ -21,40 +22,8 @@ export class HomePagePage implements AfterViewInit, OnInit {
   user!: UserModel;
   searchControl: FormControl = new FormControl('');
   searchResults: Event[] = [];
-  categorys: any[] = [
-    {
-      imgAsset: '../../../assets/icon/concerts.png',
-      CategoryName: 'Culturais',
-      id: 5,
+  categorys = CATEGORIES;
 
-    },
-    {
-      imgAsset: '../../../assets/icon/light.png',
-      CategoryName: 'Técnico-Científicos',
-      id: 1,
-    },
-    {
-      imgAsset: '../../../assets/icon/theater.png',
-      CategoryName: 'Artísticos',
-      id: 2,
-    },
-    {
-      imgAsset: '../../../assets/icon/work-team.png',
-      CategoryName: 'Profissionais',
-      id: 7,
-    },
-    {
-      imgAsset: '../../../assets/icon/training.png',
-      CategoryName: 'Oficiais',
-      id: 4,
-    },
-    {
-      imgAsset: '../../../assets/icon/fair-trade.png',
-      CategoryName: 'Sociais',
-      id: 3,
-
-    },
-  ];
   private loading: boolean = false;
 
   constructor(
@@ -64,16 +33,13 @@ export class HomePagePage implements AfterViewInit, OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userValide = this.tokenService.sessionIsValid();
-
-    if (userValide) {
-      console.log("valido");
+    if (this.tokenService.sessionIsValid()) {
       this.loadEvents();
+      this.setupSearch();
     } else {
-      console.error("não é valido");
+      console.error('Sessão inválida');
+      this.router.navigate(['/login']);
     }
-    this.loadEvents();
-    this.setupSearch();
   }
 
   setupSearch() {
@@ -132,7 +98,7 @@ export class HomePagePage implements AfterViewInit, OnInit {
     this.router.navigate(['/events', eventsId]);
   }
 
-  goToCategory(id: bigint) {
+  goToCategory(id: number) {
     console.log(id);
     this.router.navigate(['tabs/category', id]);
   }

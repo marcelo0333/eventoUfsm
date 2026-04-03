@@ -10,7 +10,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h1 style="justify-content: center; padding: 5%;">{{categoryType}}</h1>
+  @if(category){
+  <ion-img style="height: 60px; margin: 10px auto; display: block; background-color: whitesmoke; width: 60px; border-radius: 10%;" [src]="category?.imgAsset"></ion-img>
+  <h1 style="justify-content: center; padding: 5%;">{{category?.CategoryName}}</h1>
+  }
   <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
   <ion-list>
     <ion-item *ngFor="let event of events" (click)="goToEventDetails(event?.eventsId)">
