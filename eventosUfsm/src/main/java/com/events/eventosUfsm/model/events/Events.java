@@ -2,6 +2,7 @@ package com.events.eventosUfsm.model.events;
 
 import com.events.eventosUfsm.model.bookmarks.UserBookmarks;
 import com.events.eventosUfsm.model.comments.UserComments;
+import com.events.eventosUfsm.model.keyword.EventsToKeywords;
 import com.events.eventosUfsm.model.reminder.Reminder;
 import com.events.eventosUfsm.model.types.TypeEvents;
 import com.events.eventosUfsm.model.user.User;
@@ -12,6 +13,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "events")
@@ -64,6 +66,10 @@ public class Events {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = true)
     private TypeEvents type;
+    @JsonIgnore
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<EventsToKeywords> eventsToKeywords;
+
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

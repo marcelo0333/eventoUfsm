@@ -10,19 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="fix: bug commit">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/filter-item/filter-item.page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/tabs/tabs.page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" afterDir="false" />
     </list>
@@ -237,7 +224,7 @@
       <workItem from="1718655295757" duration="30319000" />
       <workItem from="1775071662555" duration="3390000" />
       <workItem from="1775152017981" duration="9748000" />
-      <workItem from="1775241713605" duration="593000" />
+      <workItem from="1775241713605" duration="696000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bug commit">
       <created>1718685738100</created>
@@ -246,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718685738100</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix: bug commit">
+      <option name="closed" value="true" />
+      <created>1775242398904</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775242398904</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +263,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/eventosUfsm" />
+    </ignored-roots>
     <MESSAGE value="fix: bug commit" />
     <option name="LAST_COMMIT_MESSAGE" value="fix: bug commit" />
   </component>

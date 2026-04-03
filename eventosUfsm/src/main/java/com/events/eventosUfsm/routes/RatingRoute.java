@@ -5,6 +5,7 @@ import com.events.eventosUfsm.model.rating.UserRating;
 import com.events.eventosUfsm.service.RatingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class RatingRoute {
 
+    @Autowired
     private final RatingService service;
+
     @PostMapping("/save")
     public ResponseEntity saveEvent(@Valid @RequestBody UserRating userRating){
         return service.saveRating(userRating);

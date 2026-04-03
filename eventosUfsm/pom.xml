@@ -14,7 +14,7 @@
 	<name>eventosUfsm</name>
 	<description>Projeto feito para eventos no ambito universitario pensando na universidade federal</description>
 	<properties>
-		<java.version>20</java.version>
+		<java.version>22</java.version>
 	</properties>
 	<dependencies>
 
