@@ -57,6 +57,8 @@ export class EventsPage implements OnInit, AfterViewInit {
       } else {
         console.error('Usuário não encontrado no token');
       }
+        this.eventService.registerInteraction(this.userId!, this.eventId, 'VIEW')
+        .subscribe({ error: e => console.error(e) });
     } else {
       this.tokenService.handleSessionExpired();
     }
@@ -148,6 +150,8 @@ export class EventsPage implements OnInit, AfterViewInit {
         (res) => {
           console.log('Evento salvo como favorito:', res);
           this.isBookmarked = true;
+          this.eventService.registerInteraction(this.userId!, this.eventId, 'BOOKMARK')
+          .subscribe({ error: e => console.error(e) });
         },
         (error) => {
           console.error('Erro ao salvar evento como favorito:', error);
@@ -286,6 +290,9 @@ export class EventsPage implements OnInit, AfterViewInit {
   }
 
   async openReminderModal() {
+    this.eventService.registerInteraction(this.userId!, this.eventId, 'REMINDER')
+    .subscribe({ error: e => console.error(e) });
+
     const modal = await this.modalController.create({
       component: ReminderModalComponent,
       componentProps: {
@@ -294,8 +301,6 @@ export class EventsPage implements OnInit, AfterViewInit {
         dateFinal: this.event.dateFinal
       }
     });
-
     await modal.present();
   }
-
 }

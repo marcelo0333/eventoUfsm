@@ -17,6 +17,9 @@ export class EventService {
 
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
+  registerInteraction(userId: number, eventId: number, type: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/api/interactions/${userId}/${eventId}/${type}`, {});
+  }
 
   getEvents(): Observable<Event[]> {
     return this.http.get<Page<Event>>(`${this.apiUrl}/events/date` )

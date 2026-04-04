@@ -23,6 +23,24 @@
             <ion-input formControlName="password" type="password" label="Senha" labelPlacement="floating" placeholder="Senha"></ion-input>
           </ion-item>
           <ion-item>
+  <ion-input formControlName="course" type="text" 
+    label="Curso" labelPlacement="floating" 
+    placeholder="Ex: Ciência da Computação">
+  </ion-input>
+</ion-item>
+
+        <ion-item>
+          <ion-label>Categorias de interesse</ion-label>
+          <ion-select formControlName="preferredTypes" multiple="true">
+            <ion-select-option value="1">Técnico-Científicos</ion-select-option>
+            <ion-select-option value="2">Artísticos</ion-select-option>
+            <ion-select-option value="3">Sociais</ion-select-option>
+            <ion-select-option value="4">Oficiais</ion-select-option>
+            <ion-select-option value="5">Culturais</ion-select-option>
+            <ion-select-option value="7">Profissionais</ion-select-option>
+          </ion-select>
+        </ion-item>
+          <ion-item>
             <ion-checkbox [(ngModel)]="isPrivilege" [ngModelOptions]="{standalone: true}"></ion-checkbox>
             <ion-label>Registrar como admin</ion-label>
           </ion-item>

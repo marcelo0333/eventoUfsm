@@ -24,7 +24,7 @@ public class EventScrapperService {
     private String workingDir;
 
     @Async
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 3600000)
     public void scrapeEvents() {
         if (scriptPath == null || scriptPath.isBlank() ||
             workingDir == null || workingDir.isBlank()) {

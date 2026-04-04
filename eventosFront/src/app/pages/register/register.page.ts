@@ -33,6 +33,8 @@ export class RegisterPage implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      course:         [''],
+      preferredTypes: [[]]
     });
   }
 
