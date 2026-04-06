@@ -54,29 +54,30 @@ export class RegisterPage implements OnInit {
     };
 
 
-    if (this.isPrivilege) {
-      this.registerService.privilege(registerDTO).subscribe(
-        response => {
-          console.log('Registro de admin bem-sucedido', response);
-          this.router.navigate(['/login']);
-        },
-        error => {
-          console.error('Erro no registro de admin', error);
-        }
-      );
-    } else {
-      this.registerService.register(registerDTO).subscribe(
-        response => {
-          console.log('Registro de usuário bem-sucedido', response);
-          this.router.navigate(['/login']);
-        },
-        error => {
-          console.error('Erro no registro de usuário', error);
-        }
-      );
-    }
-  }
+  const onSuccess = (response: any, userId: number) => {
+    // Salva preferências se preenchidas
+    const course         = this.form.value.course;
+    const preferredTypes = this.form.value.preferredTypes;
 
+    if (course || preferredTypes?.length > 0) {
+      this.registerService.savePreferences(userId, {
+        course,
+        preferredTypes: preferredTypes.join(',')
+      }).subscribe();
+    }
+
+    this.router.navigate(['/login']);
+  };
+
+  const register$ = this.isPrivilege
+    ? this.registerService.privilege(registerDTO)
+    : this.registerService.register(registerDTO);
+
+  register$.subscribe({
+    next: (response: TokensResponse) => onSuccess(response, response.userId),
+    error: (error: HttpErrorResponse) => console.error('Erro no registro', error)
+  });
+}
   private showErrorToast(message: string): void {
     this.toastController.create({
       message,

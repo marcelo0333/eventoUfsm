@@ -53,7 +53,7 @@ public class AuthService {
     int size = request.toString().length();
     Output.info(request.toString().substring(0, size - 20) + "...");
     User found = userRepository.findByEmail(request.email());
-
+    User userSave = new User();
     if (found != null) {
       final String error = "Provided email is already in use.";
       final String message = "Please, navigate to the login section.";
@@ -68,15 +68,16 @@ public class AuthService {
             .role(Role.USER)
             .build();
 
-    if (user != null)
-      userRepository.save(user);
+    if (user != null){
+      userSave =  userRepository.save(user);
+    }
 
     var accessToken = jwtService.generateAccessToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
 
 
     return ResponseEntity.status(HttpStatus.OK).body(
-            new AuthRoute.TokensResponse(accessToken, refreshToken));
+            new AuthRoute.TokensResponse(userSave.getUserId(), accessToken, refreshToken));
   }
   public ResponseEntity<?> edit(String authHeader, AuthRoute.EditDTO request) {
     User currentUser = getUserFromToken(authHeader);
@@ -129,7 +130,7 @@ public class AuthService {
   }
 
   public ResponseEntity<?> privilege(AuthRoute.RegisterDTO request) {
-
+    User userSave = new User();
     var user = User.builder()
             .firstName(request.firstName())
             .lastName(request.lastName())
@@ -138,7 +139,9 @@ public class AuthService {
             .role(Role.ADMIN)
             .build();
 
-    if (user != null) userRepository.save(user);
+    if (user != null){
+      userSave = userRepository.save(user);
+    }
 
     var accessToken = jwtService.generateAccessToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
@@ -146,7 +149,7 @@ public class AuthService {
     Output.done("Access-Token and Refresh-Token Generated");
 
     return ResponseEntity.status(HttpStatus.OK).body(
-            new AuthRoute.TokensResponse(accessToken, refreshToken));
+            new AuthRoute.TokensResponse(userSave.getUserId(), accessToken, refreshToken));
   }
 
   public ResponseEntity<?> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
@@ -160,7 +163,7 @@ public class AuthService {
     User userDetails = userRepository.findByEmail(userEmail);
     if (userDetails != null && jwtService.isTokenValid(refreshToken, userDetails)) {
       String accessToken = jwtService.generateAccessToken(userDetails);
-      return ResponseEntity.ok(new AuthRoute.TokensResponse(accessToken, refreshToken));
+      return ResponseEntity.ok(new AuthRoute.TokensResponse(userDetails.getUserId(), accessToken, refreshToken));
     }
 
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -202,14 +205,14 @@ public class AuthService {
 
     Output.done("Access and refresh tokens generated");
 
-    return ResponseEntity.status(HttpStatus.OK).body(new AuthRoute.TokensResponse(accessToken, refreshToken));
+    return ResponseEntity.status(HttpStatus.OK).body(new AuthRoute.TokensResponse(user.getUserId(), accessToken, refreshToken));
   }
 
   private ResponseEntity<AuthRoute.SignInResponse> generateSignInResponse(User user) {
     String accessToken = jwtService.generateAccessToken(user);
     String refreshToken = jwtService.generateRefreshToken(user);
 
-    AuthRoute.TokensResponse tokensResponse = new AuthRoute.TokensResponse(accessToken, refreshToken);
+    AuthRoute.TokensResponse tokensResponse = new AuthRoute.TokensResponse(user.getUserId(), accessToken, refreshToken);
     AuthRoute.SignInResponse signInResponse = new AuthRoute.SignInResponse(user, tokensResponse);
 
     System.out.println(signInResponse);

@@ -1,6 +1,7 @@
 import { Event } from "./events.model";
 
 export interface TokensResponse {
+  userId: number,
   accessToken: string,
   refreshToken: string
 }

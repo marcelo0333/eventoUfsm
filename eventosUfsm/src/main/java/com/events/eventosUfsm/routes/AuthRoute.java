@@ -81,6 +81,7 @@ public class AuthRoute {
   ) { }
 
   public static record TokensResponse(
+    Long userId,
     String accessToken,
     String refreshToken
   ) { }
