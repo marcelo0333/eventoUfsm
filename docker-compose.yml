@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: eventos_db
+    restart: always
+    environment:
+      POSTGRES_DB: eventsDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./eventosUfsm
+    container_name: eventos_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SERVER_PORT: 9090
+      DB_URL: jdbc:postgresql://db:5432/eventsDB
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      IMAGE_DIR: /app/images
+      SCRAPPER_SCRIPT_PATH: /app/scrapper/getEvents.js
+      SCRAPPER_WORKDIR: /app/scrapper
+    volumes:
+      - ./eventosUfsm/images:/app/images
+      - ./scrapper_events_ufsm:/app/scrapper
+
+  frontend:
+    build: ./eventosFront
+    container_name: eventos_front
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+  rake:
+    build: ./rake_keywords
+    container_name: eventos_rake
+    depends_on:
+      - db
+      - backend
+    environment:
+      DB_HOST: db
+      DB_NAME: eventsDB
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+
+  scraper:
+    build: ./scrapper_events_ufsm
+    container_name: eventos_scraper
+    depends_on:
+      - db
+      - backend
+    environment:
+      DB_HOST: db
+      DB_NAME: eventsDB
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+
+volumes:
+  postgres_data:
