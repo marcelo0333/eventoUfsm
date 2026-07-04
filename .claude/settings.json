@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat android/app/src/main/AndroidManifest.xml)",
+      "Bash(cat android/app/build.gradle)",
+      "Bash(find android/app/src/main/res -maxdepth 1)",
+      "Bash(cat android/app/src/main/res/values/strings.xml)"
+    ]
+  }
+}

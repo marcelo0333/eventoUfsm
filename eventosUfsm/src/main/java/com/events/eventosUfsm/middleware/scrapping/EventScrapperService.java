@@ -17,10 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class EventScrapperService {
 
-    @Value("${scrapper.script.path}")
+@Value("${scrapper.script.path}")
     private String scriptPath;
 
-    @Value("${scrapper.working.dir}")
+@Value("${scrapper.working.dir}")
     private String workingDir;
 
     @Async

@@ -39,3 +39,24 @@
   </swiper-slide>
 </swiper-container>
 </div>
+
+<div *ngIf="title == 'recommended'">
+<swiper-container
+    (slidechange)="swiperSlideChanged($event)"
+    [loop]= false
+    [pagination]="{
+      clickable: true
+    }"
+    [slidesPerView]="1.2"
+    [spaceBetween]="1">
+  <swiper-slide *ngFor="let event of eventsRecommended" style="padding: 20px;" (click)="goToEventDetails(event.eventsId)">
+    <ion-card class="event-card">
+        <img [alt]="event.eventName" [src]="event?.imgEvent" style="height: 150px; width: 100%;" />
+        <ion-card-header style="padding: 10px;">
+          <ion-card-title>{{ event?.eventName }}</ion-card-title>
+          <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
+        </ion-card-header>
+    </ion-card>
+  </swiper-slide>
+</swiper-container>
+</div>

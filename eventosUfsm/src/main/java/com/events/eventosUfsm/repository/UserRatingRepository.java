@@ -10,4 +10,5 @@ import java.util.List;
 public interface UserRatingRepository extends JpaRepository<UserRating, Long> {
 
     List<UserRating> findAllByEvents_EventsId(Long eventId);
+    List<UserRating> findByUsers_UserIdAndEvents_EventsId(Long userId, Long eventId);
 }

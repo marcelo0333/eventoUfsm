@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   api: 'http://localhost:9090/api',
+  recommendationApi: 'http://127.0.0.1:8001/recommendations',
   userKey: 'user_key',
   tokenKey: 'token_key'
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

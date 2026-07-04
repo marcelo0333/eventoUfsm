@@ -9,19 +9,29 @@
     </loaded-modules>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="feat: new classes">
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserInteractionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserPreferencesRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserInteractionRoute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserPreferencesRoute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserInteractionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserPreferencesService.java" afterDir="false" />
+    <list default="true" id="b91a3c88-141c-44bb-8863-6fc248b99525" name="Changes" comment="feat: new classes for recommend">
+      <change afterPath="$PROJECT_DIR$/eventosUfsm/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/components/slides/slides.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/components/slides/slides.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/components/slides/slides.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/components/slides/slides.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/events/events.page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/pages/home-page/home-page.page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/service/event.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/service/event.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/app/service/register.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/app/service/register.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosFront/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eventosFront/src/environments/environment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/EventosUfsmApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/EventosUfsmApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/middleware/scrapping/EventScrapperService.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/middleware/scrapping/EventScrapperService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/middleware/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/middleware/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/keyword/Keywords.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/keyword/Keywords.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userInteraction/UserInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userInteraction/UserInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userPreferences/UserPreferences.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/model/userPreferences/UserPreferences.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserRatingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/repository/UserRatingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserInteractionRoute.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserInteractionRoute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserPreferencesRoute.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/routes/UserPreferencesRoute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserInteractionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/java/com/events/eventosUfsm/service/UserInteractionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eventosUfsm/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eventosUfsm/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scrapper_events_ufsm/src/scrape/getEvents.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +139,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-20&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/projeto_integrador/eventoUfsm&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/projeto_integrador/eventoUfsm/recommendationApi&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -152,6 +162,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projeto_integrador\eventoUfsm\recommendationApi" />
       <recent name="D:\projeto_integrador\eventosFront\src\app\service" />
       <recent name="D:\projeto_integrador\eventosFront\src\app\pages\login" />
       <recent name="D:\projeto_integrador\eventosFront\src\app\pages\event" />
@@ -237,7 +248,15 @@
       <workItem from="1718655295757" duration="30319000" />
       <workItem from="1775071662555" duration="3390000" />
       <workItem from="1775152017981" duration="9748000" />
-      <workItem from="1775241713605" duration="6186000" />
+      <workItem from="1775241713605" duration="6848000" />
+      <workItem from="1775328432324" duration="1247000" />
+      <workItem from="1775519566688" duration="3749000" />
+      <workItem from="1775846105751" duration="745000" />
+      <workItem from="1777331009919" duration="2678000" />
+      <workItem from="1777438805106" duration="419000" />
+      <workItem from="1780595350875" duration="1127000" />
+      <workItem from="1780599705366" duration="669000" />
+      <workItem from="1780800674532" duration="967000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bug commit">
       <created>1718685738100</created>
@@ -262,11 +281,22 @@
       <option name="project" value="LOCAL" />
       <updated>1775242814465</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: new classes for recommend">
+      <option name="closed" value="true" />
+      <created>1775257874215</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775257874215</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="UnloadedModulesList">
     <module name="eventoUfsm" />
@@ -289,7 +319,8 @@
     </ignored-roots>
     <MESSAGE value="fix: bug commit" />
     <MESSAGE value="feat: new classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: new classes" />
+    <MESSAGE value="feat: new classes for recommend" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: new classes for recommend" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

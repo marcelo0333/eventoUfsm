@@ -57,6 +57,11 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/events/{id}").permitAll()
                     .requestMatchers(HttpMethod.GET, "/events/check-event").permitAll()
                     .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/interactions/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/interactions/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/preferences/{userId}").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/preferences/{userId}").permitAll()
+
                     .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

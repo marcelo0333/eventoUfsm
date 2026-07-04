@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/preferences")
+@RequestMapping("/preferences")
 @RequiredArgsConstructor
-
+@CrossOrigin("*")
 public class UserPreferencesRoute {
 
     private final UserPreferencesService preferencesService;
@@ -23,6 +23,7 @@ public class UserPreferencesRoute {
             @PathVariable Long userId,
             @RequestBody UserPreferences body
     ) {
+        System.out.println("Received preferences for user " + userId + ": " + body);
         return ResponseEntity.ok(
                 preferencesService.saveOrUpdate(
                         userId,

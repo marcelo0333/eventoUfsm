@@ -95,6 +95,7 @@ export class EventsPage implements OnInit, AfterViewInit {
   }
 
 
+
   ngAfterViewInit() {
     this.breakTitleIntoChunks();
   }

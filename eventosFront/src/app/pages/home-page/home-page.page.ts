@@ -18,6 +18,7 @@ export class HomePagePage implements AfterViewInit, OnInit {
 
   events: Event[] = [];
   eventsBookmarks: Event[] = [];
+  eventsRecommended: Event[] = [];
 
   user!: UserModel;
   searchControl: FormControl = new FormControl('');
@@ -30,6 +31,7 @@ export class HomePagePage implements AfterViewInit, OnInit {
     private eventService: EventService,
     private router: Router,
     private tokenService: TokenService,
+
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +62,14 @@ export class HomePagePage implements AfterViewInit, OnInit {
     });
   }
 
+  getEventsRecommended() {
+    this.eventService.getEventsRecommended().subscribe(
+      (data: Event[]) => {
+        this.eventsRecommended = data;
+      }
+    );
+  }
+
   loadEvents(): void {
     this.loading = true;
     this.eventService.getEvents().subscribe(
@@ -82,6 +92,17 @@ export class HomePagePage implements AfterViewInit, OnInit {
       (error) => {
         this.loading = false;
         console.error('Erro ao carregar eventos:', error);
+      }
+    );
+    this.eventService.getEventsRecommended().subscribe(
+      (data: Event[]) => {
+        this.eventsRecommended = data;
+        console.log('Eventos recomendados:', data);
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        console.error('Erro ao carregar eventos recomendados:', error);
       }
     );
   }

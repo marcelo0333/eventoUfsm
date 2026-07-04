@@ -1,11 +1,13 @@
 package com.events.eventosUfsm.service;
 
 import com.events.eventosUfsm.model.events.Events;
+import com.events.eventosUfsm.model.rating.UserRating;
 import com.events.eventosUfsm.model.user.User;
 import com.events.eventosUfsm.model.userInteraction.InteractionType;
 import com.events.eventosUfsm.model.userInteraction.UserInteraction;
 import com.events.eventosUfsm.repository.EventsRepository;
 import com.events.eventosUfsm.repository.UserInteractionRepository;
+import com.events.eventosUfsm.repository.UserRatingRepository;
 import com.events.eventosUfsm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class UserInteractionService {
     private final UserInteractionRepository interactionRepository;
     private final UserRepository userRepository;
     private final EventsRepository eventsRepository;
-
+    private final UserRatingRepository userRatingRepository;
     public void registerInteraction(Long userId, Long eventId, InteractionType type) {
         // Evita duplicatas do mesmo tipo
         if (interactionRepository.existsByUser_UserIdAndEvent_EventsIdAndType(userId, eventId, type)) {
@@ -38,8 +40,34 @@ public class UserInteractionService {
                 .build();
 
         interactionRepository.save(interaction);
-    }
 
+        Integer implicitRating = switch (type) {
+            case REMINDER  -> 5;
+            case BOOKMARK  -> 4;
+            case SHARE     -> 3;
+            case VIEW      -> 1;
+            default        -> null;
+        };
+
+        if (implicitRating != null) {
+            saveImplicitRating(userId, eventId, implicitRating);
+        }
+    }
+    private void saveImplicitRating(Long userId, Long eventId, Integer rating) {
+        // Só salva se ainda não existir rating para esse evento
+        if (userRatingRepository.findByUsers_UserIdAndEvents_EventsId(userId, eventId).isEmpty()) {
+            User user = userRepository.findById(userId).orElseThrow();
+            Events event = eventsRepository.findById(eventId).orElseThrow();
+
+            UserRating userRating = UserRating.builder()
+                    .users(user)
+                    .events(event)
+                    .rating(rating)
+                    .build();
+
+            userRatingRepository.save(userRating);
+        }
+        }
     public List<UserInteraction> getUserInteractions(Long userId) {
         return interactionRepository.findByUser_UserId(userId);
     }

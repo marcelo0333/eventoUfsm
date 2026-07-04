@@ -14,11 +14,25 @@ import {TokenService} from "./auth.token.service";
 export class EventService {
 
   private apiUrl = `${environment.api}`;
-
+  private recommendationApi = `${environment.recommendationApi}`;
   constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   registerInteraction(userId: number, eventId: number, type: string): Observable<any> {
-  return this.http.post(`${this.apiUrl}/api/interactions/${userId}/${eventId}/${type}`, {});
+    const token = this.tokenService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  return this.http.post(`${this.apiUrl}/interactions/${userId}/${eventId}/${type}`, {headers});
+  }
+
+  getEventsRecommended(): Observable<Event[]> {
+    const user = this.tokenService.getUserFromToken();
+    const userId = user ? user.userId : null;
+
+    return this.http.get<Page<Event>>(`${this.recommendationApi}/${userId}`)
+    .pipe(
+      map(page => page.content)
+    );
   }
 
   getEvents(): Observable<Event[]> {

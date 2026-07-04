@@ -11,13 +11,15 @@ export class SlidesComponent  implements OnInit {
 
   @Input() events: Event[] = [] ;
   @Input() eventsBookmarks: Event[] = [] ;
+  @Input() eventsRecommended: Event[] = [] ;
   @Input() title: string = ''
   constructor(
     private router: Router
   ) { }
 
-  ngOnInit() {  console.log('events', this.events);
+ngOnInit() {  console.log('events', this.events); 
   console.log('eventsBookmarks', this.eventsBookmarks);
+  console.log('eventsRecommended', this.eventsRecommended);
   console.log('title', this.title);}
   swiperSlideChanged(e: any): void {
     console.log('Slide alterado:', e);

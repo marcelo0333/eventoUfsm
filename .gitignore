@@ -1,3 +1,7 @@
 .idea
 .vscode
 ./eventosUfsm/target/
+recommendationApi/__pycache__/
+recommendationApi/venv/
+./rake_keywords/venv/
+rake_keywords/venv

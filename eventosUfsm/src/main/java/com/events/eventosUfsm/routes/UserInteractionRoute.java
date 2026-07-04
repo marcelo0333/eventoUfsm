@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/interactions")
+@RequestMapping("/interactions")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserInteractionRoute {
 
     private final UserInteractionService interactionService;
@@ -22,6 +23,7 @@ public class UserInteractionRoute {
             @PathVariable Long eventId,
             @PathVariable InteractionType type
     ) {
+        System.out.println("Registering interaction: userId=" + userId + ", eventId=" + eventId + ", type=" + type);
         interactionService.registerInteraction(userId, eventId, type);
         return ResponseEntity.ok().build();
     }
