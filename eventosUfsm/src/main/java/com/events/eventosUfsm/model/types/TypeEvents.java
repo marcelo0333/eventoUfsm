@@ -19,9 +19,10 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class TypeEvents{
+    // IDENTITY (e não SEQUENCE) para a coluna ter DEFAULT no banco: o scraper insere
+    // via TypeORM sem informar o id, e sem o default o insert viola o NOT NULL.
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_events_seq")
-    @SequenceGenerator(name = "type_events_seq", sequenceName = "type_events_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "types_id")
     private Long typesId;
     @Column(name = "name_types", nullable = false)
