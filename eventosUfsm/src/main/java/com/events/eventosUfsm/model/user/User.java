@@ -46,6 +46,7 @@ public class User implements UserDetails {
     @NotNull
     private String email;
 
+    @JsonIgnore
     @NotNull
     private String password;
     @Column(name = "image_user")
@@ -59,19 +60,21 @@ public class User implements UserDetails {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserBookmarks> bookmarks;
     @JsonIgnore
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserComments> comments;
     @JsonIgnore
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserRating> ratings;
+    // Mantido EAGER: é serializado (@JsonManagedReference) na resposta de login;
+    // com LAZY lançaria LazyInitializationException fora da transação.
     @JsonManagedReference
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Events> createdEvents;
     @JsonIgnore
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Reminder> reminders;
   @ManyToMany
   @Override
@@ -79,6 +82,7 @@ public class User implements UserDetails {
       return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;

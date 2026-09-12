@@ -21,7 +21,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class EventsRoute {
 
     private final EventsService service;

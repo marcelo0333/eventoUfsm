@@ -110,7 +110,6 @@ public class AuthService {
       String email = jwtService.extractUsername(token);
       return userRepository.findByEmail(email);
     } catch (Exception e) {
-      System.out.println("Token parsing failed: " + e.getMessage());
       return null;
     }
   }
@@ -127,29 +126,6 @@ public class AuthService {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body("Invalid credentials. Please try again.");
     }
-  }
-
-  public ResponseEntity<?> privilege(AuthRoute.RegisterDTO request) {
-    User userSave = new User();
-    var user = User.builder()
-            .firstName(request.firstName())
-            .lastName(request.lastName())
-            .email(request.email())
-            .password(hashPassword(request.password()))
-            .role(Role.ADMIN)
-            .build();
-
-    if (user != null){
-      userSave = userRepository.save(user);
-    }
-
-    var accessToken = jwtService.generateAccessToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-
-    Output.done("Access-Token and Refresh-Token Generated");
-
-    return ResponseEntity.status(HttpStatus.OK).body(
-            new AuthRoute.TokensResponse(userSave.getUserId(), accessToken, refreshToken));
   }
 
   public ResponseEntity<?> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
@@ -215,8 +191,7 @@ public class AuthService {
     AuthRoute.TokensResponse tokensResponse = new AuthRoute.TokensResponse(user.getUserId(), accessToken, refreshToken);
     AuthRoute.SignInResponse signInResponse = new AuthRoute.SignInResponse(user, tokensResponse);
 
-    System.out.println(signInResponse);
-
+    // Não logar a resposta de login (contém dados do usuário e tokens).
     return ResponseEntity.status(HttpStatus.OK).body(signInResponse);
   }
 
