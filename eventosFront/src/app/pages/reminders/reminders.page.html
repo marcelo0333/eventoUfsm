@@ -5,20 +5,41 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
-  <ion-list>
-    <ion-item *ngFor="let reminder of reminders">
-      <ion-card style="height: 300px; width: 300px;" class="event-card">
-        <img [alt]="reminder.events?.eventName" [src]="reminder.events?.imgEvent" style="height: 150px; width: 100%;" />
-        <ion-card-header style="padding: 10px;">
-          <ion-card-title>{{ reminder.events?.eventName }}</ion-card-title>
-          <ion-card-subtitle>{{ reminder.events?.centerName }}</ion-card-subtitle>
-          <p>Reminder Time: {{ reminder.reminderTime | date: 'short' }}</p>
-        </ion-card-header>
-      </ion-card>
-      <ion-button color="danger" size="large" (click)="deleteReminder(reminder.reminderId)">
-      <ion-icon name="trash" ></ion-icon>
-      </ion-button>
-    </ion-item>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="reminders-loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- Vazio -->
+  <div *ngIf="!loading && reminders.length === 0" class="reminders-empty">
+    <ion-icon name="alarm-outline"></ion-icon>
+    <h3>Nenhum lembrete</h3>
+    <p>Adicione lembretes nos eventos para não perder nada.</p>
+  </div>
+
+  <!-- Lista -->
+  <ion-list *ngIf="!loading && reminders.length > 0" lines="none" class="reminders-list">
+    <ion-card *ngFor="let reminder of reminders" class="reminder-card">
+      <img
+        [alt]="reminder.events?.eventName"
+        [src]="reminder.events?.imgEvent"
+        class="reminder-img"
+        (click)="goToEventDetails(reminder.events?.eventsId)" />
+      <ion-card-header>
+        <ion-card-title>{{ reminder.events?.eventName }}</ion-card-title>
+        <ion-card-subtitle>{{ reminder.events?.centerName }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="reminder-footer">
+        <span class="reminder-time">
+          <ion-icon name="time-outline"></ion-icon>
+          {{ reminder.reminderTime | date: 'short' }}
+        </span>
+        <ion-button fill="clear" color="danger" (click)="deleteReminder(reminder.reminderId)" aria-label="Excluir lembrete">
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
+
 </ion-content>

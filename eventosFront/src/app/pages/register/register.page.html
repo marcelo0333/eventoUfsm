@@ -1,53 +1,48 @@
-<ion-content>
+<ion-content [fullscreen]="true" class="auth-content">
   <div class="flex-center">
-    <ion-card class="custom-card">
-      <ion-card-header class="center-content">
-        <div class="logo">
-          <ion-img src="../assets/logo.png"></ion-img>
+    <ion-card class="auth-card">
+      <div class="auth-hero">
+        <div class="logo-wrap">
+          <ion-img src="assets/logo.png"></ion-img>
         </div>
-        <ion-card-title>SmartEventos</ion-card-title>
-        <ion-card-subtitle>UFSM</ion-card-subtitle>
-      </ion-card-header>
-      <form [formGroup]="form">
-        <ion-card-content>
-          <ion-item>
-            <ion-input formControlName="firstName" type="text" label="Nome" labelPlacement="floating" placeholder="Insira o seu nome"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="lastName" type="text" label="Sobrenome" labelPlacement="floating" placeholder="Insira seu sobrenome"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="email" type="email" label="E-mail" labelPlacement="floating" placeholder="Insira o E-mail"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input formControlName="password" type="password" label="Senha" labelPlacement="floating" placeholder="Senha"></ion-input>
-          </ion-item>
-          <ion-item>
-  <ion-input formControlName="course" type="text" 
-    label="Curso" labelPlacement="floating" 
-    placeholder="Ex: Ciência da Computação">
-  </ion-input>
-</ion-item>
+        <h1 class="brand-title">Criar conta</h1>
+        <p class="brand-subtitle">SmartEventos · UFSM</p>
+      </div>
 
-        <ion-item>
-          <ion-label>Categorias de interesse</ion-label>
-          <ion-select formControlName="preferredTypes" multiple="true">
-            <ion-select-option value="1">Técnico-Científicos</ion-select-option>
-            <ion-select-option value="2">Artísticos</ion-select-option>
-            <ion-select-option value="3">Sociais</ion-select-option>
-            <ion-select-option value="4">Oficiais</ion-select-option>
-            <ion-select-option value="5">Culturais</ion-select-option>
-            <ion-select-option value="7">Profissionais</ion-select-option>
-          </ion-select>
-        </ion-item>
-          <ion-item>
-            <ion-checkbox [(ngModel)]="isPrivilege" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-            <ion-label>Registrar como admin</ion-label>
+      <form [formGroup]="form" (ngSubmit)="register()">
+        <ion-card-content class="auth-body">
+          <ion-item lines="full" class="auth-field">
+            <ion-input formControlName="firstName" type="text" label="Nome" labelPlacement="floating" placeholder="Seu nome"></ion-input>
           </ion-item>
-          <ion-button shape="round" size="full" (click)="register()">Cadastrar</ion-button>
-          <ion-label class="ion-text-nowrap">
-            <a [routerLink]="['/login']" routerLinkActive="router-link-active">Já tem login? Entre aqui!</a>
-          </ion-label>
+          <ion-item lines="full" class="auth-field">
+            <ion-input formControlName="lastName" type="text" label="Sobrenome" labelPlacement="floating" placeholder="Seu sobrenome"></ion-input>
+          </ion-item>
+          <ion-item lines="full" class="auth-field">
+            <ion-input formControlName="email" type="email" label="E-mail" labelPlacement="floating" placeholder="seu@email.com" autocomplete="email"></ion-input>
+          </ion-item>
+          <ion-item lines="full" class="auth-field">
+            <ion-input formControlName="password" type="password" label="Senha" labelPlacement="floating" placeholder="Mínimo 4 caracteres" autocomplete="new-password"></ion-input>
+          </ion-item>
+          <ion-item lines="full" class="auth-field">
+            <ion-input formControlName="course" type="text" label="Curso" labelPlacement="floating" placeholder="Ex: Ciência da Computação"></ion-input>
+          </ion-item>
+
+          <ion-item lines="full" class="auth-field">
+            <ion-select formControlName="preferredTypes" multiple="true" label="Categorias de interesse" labelPlacement="floating" placeholder="Selecione">
+              <ion-select-option value="1">Técnico-Científicos</ion-select-option>
+              <ion-select-option value="2">Artísticos</ion-select-option>
+              <ion-select-option value="3">Sociais</ion-select-option>
+              <ion-select-option value="4">Oficiais</ion-select-option>
+              <ion-select-option value="5">Culturais</ion-select-option>
+              <ion-select-option value="7">Profissionais</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-button expand="block" shape="round" type="submit" class="auth-submit">Cadastrar</ion-button>
+
+          <p class="auth-switch">
+            Já tem conta? <a routerLink="/login">Entre aqui</a>
+          </p>
         </ion-card-content>
       </form>
     </ion-card>

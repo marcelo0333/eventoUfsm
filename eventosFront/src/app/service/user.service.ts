@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { UserModel } from "../models/auth.data.transfer.object";
@@ -14,12 +14,8 @@ export class UserDetailService {
   constructor(private http: HttpClient) { }
 
   public editUser(userModel: UserModel): Observable<any> {
-    const token = localStorage.getItem('token_key');
-    const accessToken = token ? JSON.parse(token).accessToken : null;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${accessToken}`
-    });
-    return this.http.put<any>(`${this.API}/edit`, userModel, { headers });
+    // O token é anexado automaticamente pelo authInterceptor.
+    return this.http.put<any>(`${this.API}/edit`, userModel);
   }
 
   anyComparator(a: any, b: any): boolean {

@@ -5,6 +5,7 @@ import { RegisterService } from "../../service/register.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastController } from '@ionic/angular/standalone';
+import { TokenService } from "../../service/auth.token.service";
 
 @Component({
   selector: 'app-register',
@@ -14,13 +15,13 @@ import { ToastController } from '@ionic/angular/standalone';
 export class RegisterPage implements OnInit {
   public form!: FormGroup;
   public imgUser: File | null = null;
-  public isPrivilege: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private tokenService: TokenService
   ) { }
 
   ngOnInit() {
@@ -54,28 +55,36 @@ export class RegisterPage implements OnInit {
     };
 
 
-  const onSuccess = (response: any, userId: number) => {
-    // Salva preferências se preenchidas
-    const course         = this.form.value.course;
-    const preferredTypes = this.form.value.preferredTypes;
+  const goToLogin = () => this.router.navigate(['/login']);
 
-    if (course || preferredTypes?.length > 0) {
-      this.registerService.savePreferences(userId, {
-        course,
-        preferredTypes: preferredTypes.join(',')
-      }).subscribe();
+  const onSuccess = (tokens: TokensResponse) => {
+    const course = this.form.value.course;
+    const preferredTypes = this.form.value.preferredTypes;
+    const hasPrefs = course || preferredTypes?.length > 0;
+
+    if (!hasPrefs) {
+      goToLogin();
+      return;
     }
 
-    this.router.navigate(['/login']);
+    // Guarda o token temporariamente para que o interceptor autentique a
+    // chamada de preferências (o endpoint agora exige autenticação).
+    this.tokenService.setTokens(tokens);
+    this.registerService.savePreferences(tokens.userId, {
+      course,
+      preferredTypes: preferredTypes.join(',')
+    }).subscribe({
+      next: () => { this.tokenService.removeTokens(); goToLogin(); },
+      error: () => { this.tokenService.removeTokens(); goToLogin(); }
+    });
   };
 
-  const register$ = this.isPrivilege
-    ? this.registerService.privilege(registerDTO)
-    : this.registerService.register(registerDTO);
-
-  register$.subscribe({
-    next: (response: TokensResponse) => onSuccess(response, response.userId),
-    error: (error: HttpErrorResponse) => console.error('Erro no registro', error)
+  this.registerService.register(registerDTO).subscribe({
+    next: (tokens: TokensResponse) => onSuccess(tokens),
+    error: (error: HttpErrorResponse) => {
+      this.showErrorToast('Não foi possível concluir o cadastro. Tente novamente.');
+      console.error('Erro no registro', error);
+    }
   });
 }
   private showErrorToast(message: string): void {

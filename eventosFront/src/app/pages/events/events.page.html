@@ -1,71 +1,75 @@
-<ion-header [translucent]="true">
-  <ion-toolbar style="background-color: #f6f7f9">
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button routerLink="">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isBookmarked" (click)="deleteBookmark()">
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="isBookmarked" (click)="deleteBookmark()" color="danger">
         <ion-icon name="heart" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button *ngIf="!isBookmarked" (click)="saveBookmark()">
         <ion-icon name="heart-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="isCreatedByUser" (click)="openEditModal()">
-        <ion-icon name="create" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button *ngIf="isCreatedByUser" (click)="deleteEvent()">
-        <ion-icon name="trash" slot="icon-only"></ion-icon>
-      </ion-button>
       <ion-button (click)="openReminderModal()">
         <ion-icon name="alarm-outline" slot="icon-only"></ion-icon>
       </ion-button>
+      <ion-button *ngIf="isCreatedByUser" (click)="openEditModal()">
+        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="isCreatedByUser" (click)="deleteEvent()" color="danger">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-img style="height: 40px; margin-right: 14%" src="../assets/logo.png"></ion-img>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
-  <ion-img *ngIf="event.imgEvent" style="height: 200px" [src]="event.imgEvent"></ion-img>
-  <div style="display: flex; align-items: center; padding: 0 10px; justify-content: inherit; ">
-    <p style="margin-right: 8px; margin-bottom: 14px">{{event.totalBookmarks}}</p>
-    <ion-icon name="heart"></ion-icon>
-  </div>
-  <h1 class="event-title" id="eventTitle">{{ event.eventName }}</h1>
-  <h2 class="center-title">{{ event.centerName}}</h2>
-  <div class="localization">
-    <ion-icon size="large" name="location"></ion-icon>
-    <div class="text-container">
-      <p>Local: {{local?.nameLocal}}</p>
-      <p>{{local?.address}}, {{local?.city}}</p>
-    </div>
-  </div>
-  <br>
-  <div class="localization">
-    <ion-icon size="large" name="alarm"></ion-icon>
-    <div class="text-container">
-      <p>{{event.dateInitial}}</p>
-      <p>{{event.dateFinal}}</p>
-    </div>
-  </div>
-  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
- <div>
-      <h1 class="event-title">Descrição</h1>
-      <p style="margin:19px">{{event.description}}</p>
- </div>
-  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
-  <h1 class="event-title">Local</h1>
-  <div id="map" style="height: 300px; width: 100%; padding: 20px;"></div>
-  <div class="center-title">
-      <h2 class="center-title">Local: {{local?.nameLocal}}</h2>
-      <h2 class="center-title">{{local?.address}}, {{local?.city}}</h2>
-  </div>
-  <hr style="background-color: #8c8c8c; margin: 10px; border-radius: 10px">
-<div>
-  <h1 class="event-title" style="text-align: center">Precisa de ajuda?</h1>
-  <h4  style="text-align: justify; padding: 20px; padding-top: 0">Acesse a nossa central de ajuda ou entre em contato com o <br>
-    responsavel pelo evento.</h4>
 
-  <h4  style="text-align: center; color: aqua">Contato <br> {{event.contact}}</h4>
-</div>
+<ion-content [fullscreen]="true">
+  <div class="event-cover">
+    <img *ngIf="event.imgEvent" [src]="event.imgEvent" alt="{{ event.eventName }}" />
+    <span class="event-bookmarks">
+      <ion-icon name="heart"></ion-icon> {{ event.totalBookmarks || 0 }}
+    </span>
+  </div>
+
+  <div class="event-body">
+    <h1 class="event-title">{{ event.eventName }}</h1>
+    <p class="event-center">{{ event.centerName }}</p>
+
+    <div class="info-row">
+      <ion-icon name="location-outline" color="primary"></ion-icon>
+      <div>
+        <p class="info-main">{{ local?.nameLocal || 'Local a definir' }}</p>
+        <p class="info-sub" *ngIf="local?.address">{{ local?.address }}, {{ local?.city }}</p>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <ion-icon name="calendar-outline" color="primary"></ion-icon>
+      <div>
+        <p class="info-main">{{ event.dateInitial }}</p>
+        <p class="info-sub" *ngIf="event.dateFinal">até {{ event.dateFinal }}</p>
+      </div>
+    </div>
+
+    <section class="event-section">
+      <h2 class="event-section-title">Descrição</h2>
+      <p class="event-description">{{ event.description }}</p>
+    </section>
+
+    <section class="event-section">
+      <h2 class="event-section-title">Localização</h2>
+      <div id="map" class="event-map"></div>
+      <p class="info-sub" *ngIf="local?.nameLocal">{{ local?.nameLocal }} — {{ local?.address }}, {{ local?.city }}</p>
+    </section>
+
+    <section class="event-section help-section">
+      <h2 class="event-section-title">Precisa de ajuda?</h2>
+      <p class="info-sub">Acesse a central de ajuda ou entre em contato com o responsável pelo evento.</p>
+      <p class="event-contact"><ion-icon name="call-outline"></ion-icon> {{ event.contact }}</p>
+    </section>
+  </div>
   <ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
     <ng-template>
       <ion-header>

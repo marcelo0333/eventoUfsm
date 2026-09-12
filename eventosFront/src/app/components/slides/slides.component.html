@@ -1,62 +1,35 @@
-<div *ngIf="title == 'recentes'">
-  <swiper-container
-    (slidechange)="swiperSlideChanged($event)"
-    [loop]="true"
-    [pagination]="{
-      clickable: true
-    }"
-    [slidesPerView]="1.2"
-    [spaceBetween]="1">
-    <swiper-slide *ngFor="let event of events" style="padding: 20px;" (click)="goToEventDetails(event.eventsId)">
-    <ion-card class="event-card">
-        <img [alt]="event.eventName" [src]="event?.imgEvent" style="height: 150px; width: 100%;" />
-        <ion-card-header style="padding: 10px;">
-          <ion-card-title>{{ event?.eventName }}</ion-card-title>
-          <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
-        </ion-card-header>
-    </ion-card>
-
-    </swiper-slide>
-  </swiper-container>
+<!-- Loading: skeletons -->
+<div *ngIf="loading" class="slides-row">
+  <div class="skeleton-card" *ngFor="let i of [1, 2]">
+    <ion-skeleton-text [animated]="true" class="skeleton-img"></ion-skeleton-text>
+    <div class="skeleton-body">
+      <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width: 50%;"></ion-skeleton-text>
+    </div>
+  </div>
 </div>
-<div *ngIf="title == 'bookmarks'">
+
+<!-- Estado vazio -->
+<div *ngIf="!loading && items.length === 0" class="slides-empty">
+  <ion-icon name="calendar-clear-outline"></ion-icon>
+  <p>{{ emptyMessage }}</p>
+</div>
+
+<!-- Conteúdo -->
 <swiper-container
-    (slidechange)="swiperSlideChanged($event)"
-    [loop]= false
-    [pagination]="{
-      clickable: true
-    }"
-    [slidesPerView]="1.2"
-    [spaceBetween]="1">
-  <swiper-slide *ngFor="let event of eventsBookmarks" style="padding: 20px;" (click)="goToEventDetails(event.eventsId)">
+  *ngIf="!loading && items.length > 0"
+  [loop]="items.length > 2"
+  [pagination]="{ clickable: true }"
+  [slidesPerView]="1.15"
+  [spaceBetween]="12"
+  class="events-swiper">
+  <swiper-slide *ngFor="let event of items" (click)="goToEventDetails(event.eventsId)">
     <ion-card class="event-card">
-        <img [alt]="event.eventName" [src]="event?.imgEvent" style="height: 150px; width: 100%;" />
-        <ion-card-header style="padding: 10px;">
-          <ion-card-title>{{ event?.eventName }}</ion-card-title>
-          <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
-        </ion-card-header>
+      <img [alt]="event?.eventName" [src]="event?.imgEvent" class="event-card-img" />
+      <ion-card-header>
+        <ion-card-title>{{ event?.eventName }}</ion-card-title>
+        <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
+      </ion-card-header>
     </ion-card>
   </swiper-slide>
 </swiper-container>
-</div>
-
-<div *ngIf="title == 'recommended'">
-<swiper-container
-    (slidechange)="swiperSlideChanged($event)"
-    [loop]= false
-    [pagination]="{
-      clickable: true
-    }"
-    [slidesPerView]="1.2"
-    [spaceBetween]="1">
-  <swiper-slide *ngFor="let event of eventsRecommended" style="padding: 20px;" (click)="goToEventDetails(event.eventsId)">
-    <ion-card class="event-card">
-        <img [alt]="event.eventName" [src]="event?.imgEvent" style="height: 150px; width: 100%;" />
-        <ion-card-header style="padding: 10px;">
-          <ion-card-title>{{ event?.eventName }}</ion-card-title>
-          <ion-card-subtitle>{{ event?.centerName }}</ion-card-subtitle>
-        </ion-card-header>
-    </ion-card>
-  </swiper-slide>
-</swiper-container>
-</div>

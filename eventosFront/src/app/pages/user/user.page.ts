@@ -32,6 +32,16 @@ export class UserPage implements OnInit {
     this.initializeForm();
   }
 
+  get initials(): string {
+    const f = this.userModel?.firstName?.charAt(0) ?? '';
+    const l = this.userModel?.lastName?.charAt(0) ?? '';
+    return (f + l).toUpperCase() || '?';
+  }
+
+  get fullName(): string {
+    return `${this.userModel?.firstName ?? ''} ${this.userModel?.lastName ?? ''}`.trim();
+  }
+
   initializeForm(): void {
     this.form = this.formBuilder.group({
       firstName: [this.userModel?.firstName || '', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],

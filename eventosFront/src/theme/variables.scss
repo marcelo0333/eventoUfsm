@@ -1,2 +1,98 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// Tema SmartEventos — UFSM
+// Paleta coesa: azul institucional como primária, verde/esmeralda como destaque.
+// Documentação de theming: https://ionicframework.com/docs/theming
+
+:root {
+  /* Primária — azul institucional */
+  --ion-color-primary: #1565c0;
+  --ion-color-primary-rgb: 21, 101, 192;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1259a9;
+  --ion-color-primary-tint: #2c74c6;
+
+  /* Secundária — esmeralda (destaques, ações positivas) */
+  --ion-color-secondary: #10b981;
+  --ion-color-secondary-rgb: 16, 185, 129;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0ea372;
+  --ion-color-secondary-tint: #28c08e;
+
+  /* Terciária — violeta suave (categorias, badges) */
+  --ion-color-tertiary: #7c4dff;
+  --ion-color-tertiary-rgb: 124, 77, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #6d44e0;
+  --ion-color-tertiary-tint: #895fff;
+
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  --ion-color-medium: #7a869a;
+  --ion-color-medium-rgb: 122, 134, 154;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #6b7688;
+  --ion-color-medium-tint: #8792a4;
+
+  --ion-color-light: #f4f6f9;
+  --ion-color-light-rgb: 244, 246, 249;
+  --ion-color-light-contrast: #10131a;
+  --ion-color-light-contrast-rgb: 16, 19, 26;
+  --ion-color-light-shade: #d7d9dc;
+  --ion-color-light-tint: #f5f7fa;
+
+  /* Superfícies e tipografia */
+  --ion-background-color: #f4f6f9;
+  --ion-background-color-rgb: 244, 246, 249;
+  --ion-text-color: #1a2233;
+  --ion-text-color-rgb: 26, 34, 51;
+  --ion-toolbar-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+
+  /* Tokens do app */
+  --app-radius: 16px;
+  --app-radius-sm: 10px;
+  --app-shadow: 0 6px 20px rgba(21, 101, 192, 0.08);
+  --app-shadow-sm: 0 2px 8px rgba(16, 24, 40, 0.06);
+  --app-gap: 16px;
+}
+
+/* Modo escuro — ajusta superfícies mantendo a mesma identidade */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #0f141b;
+    --ion-background-color-rgb: 15, 20, 27;
+    --ion-text-color: #eef2f7;
+    --ion-text-color-rgb: 238, 242, 247;
+    --ion-toolbar-background: #161d27;
+    --ion-item-background: #161d27;
+    --ion-card-background: #161d27;
+    --ion-color-light: #1c2430;
+    --ion-color-light-rgb: 28, 36, 48;
+    --ion-color-light-contrast: #eef2f7;
+    --app-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}

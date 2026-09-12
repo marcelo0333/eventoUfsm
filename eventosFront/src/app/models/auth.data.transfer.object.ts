@@ -52,6 +52,7 @@ export class UserModel {
   public lastName?: string;
   public email?: string;
   public role?: string;
+  public imgUser?: string;
 }
 
 

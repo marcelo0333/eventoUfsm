@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-import {IsAdminGuard} from "../../service/auth.guard";
+import { authGuard, adminGuard } from "../../service/auth.guard";
 
 export const routes: Routes = [
   {
-    path: 'tabs',  canActivate: [IsAdminGuard],
+    path: 'tabs',  canActivate: [authGuard],
     component: TabsPage,
     children: [
       {
@@ -33,7 +33,7 @@ export const routes: Routes = [
         loadChildren: () => import('../filter-item/filter-item.module').then(m => m.FilterItemPageModule)
       },
       {
-        path: 'events-creator',
+        path: 'events-creator', canActivate: [adminGuard],
         loadChildren: () => import('../events-creator/events-creator.module').then( m => m.EventsCreatorPageModule)
       },
       {
