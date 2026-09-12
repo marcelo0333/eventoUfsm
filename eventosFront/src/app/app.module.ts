@@ -15,9 +15,6 @@ import { authInterceptor } from './service/auth-interceptor.service';
 // Componentes
 import { ReminderModalComponent } from './pages/reminder-modal/reminder-modal.component';
 
-// Plugins de Terceiros
-import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
-import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import {DatePipe} from "@angular/common";
 
 @NgModule({
@@ -35,8 +32,6 @@ import {DatePipe} from "@angular/common";
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    LocalNotifications,
-    AndroidPermissions,
     provideHttpClient(withInterceptors([authInterceptor]),),
     DatePipe
   ],
