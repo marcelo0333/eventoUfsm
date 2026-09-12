@@ -1,29 +1,30 @@
 package com.events.eventosUfsm.routes;
 
-import com.events.eventosUfsm.model.events.Events;
 import com.events.eventosUfsm.model.rating.UserRating;
+import com.events.eventosUfsm.model.user.User;
 import com.events.eventosUfsm.service.RatingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rating")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class RatingRoute {
 
-    @Autowired
     private final RatingService service;
 
     @PostMapping("/save")
-    public ResponseEntity saveEvent(@Valid @RequestBody UserRating userRating){
-        return service.saveRating(userRating);
+    public ResponseEntity<?> saveEvent(@Valid @RequestBody UserRating userRating,
+                                       @AuthenticationPrincipal User currentUser) {
+        return service.saveRating(currentUser.getUserId(), userRating);
     }
+
     @PutMapping("/edit")
-    public ResponseEntity putEvent(@RequestBody UserRating userRating){
-        return service.editRating(userRating);
+    public ResponseEntity<?> putEvent(@RequestBody UserRating userRating,
+                                      @AuthenticationPrincipal User currentUser) {
+        return service.editRating(currentUser.getUserId(), userRating);
     }
 }

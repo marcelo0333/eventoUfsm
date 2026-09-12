@@ -1,46 +1,115 @@
-
 ion-content {
-  --padding-bottom: 150px; /* Adiciona um padding extra no final */
+  --padding-bottom: 40px;
 }
+
+.event-cover {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: var(--ion-color-light-shade);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.event-bookmarks {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  ion-icon {
+    color: var(--ion-color-danger);
+  }
+}
+
+.event-body {
+  padding: 18px 18px 8px;
+}
+
 .event-title {
-  white-space: normal;
-  word-wrap: anywhere;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   overflow-wrap: break-word;
-  display: block;
-  text-align: start;
-  padding: 5px;
-  font-size: 1.3em;
 }
-.center-title {
-  white-space: normal;
-  word-wrap: anywhere;
-  overflow-wrap: break-word;
-  display: block;
-  text-align: start;
-  padding-left: 5px;
-  font-size: 1.0em;
+
+.event-center {
+  margin: 4px 0 18px;
+  color: var(--ion-color-medium);
+  font-weight: 600;
 }
-.localization {
+
+.info-row {
   display: flex;
-  align-items: flex-start; /* Ajusta o alinhamento vertical dos itens */
-  white-space: normal;
-  word-wrap: anywhere;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+
+  ion-icon {
+    font-size: 1.4rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .info-main {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .info-sub {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+.event-section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(var(--ion-text-color-rgb), 0.08);
+}
+
+.event-section-title {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.event-description {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ion-text-color);
   overflow-wrap: break-word;
-  text-align: start;
-  padding-left: 5px;
-  font-size: 0.7em;
 }
 
-.localization ion-icon {
-  margin-right: 5px;
+.event-map {
+  height: 260px;
+  width: 100%;
+  border-radius: var(--app-radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: var(--ion-color-light-shade);
 }
 
-.localization .text-container {
-  display: flex;
-  flex-direction: column; /* Empilha os parágrafos verticalmente */
-}
-
-.localization p {
-  margin: 0px; /* Remove a margem padrão dos parágrafos */
-  margin-right: 10px;
+.help-section .event-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-weight: 700;
+  color: var(--ion-color-primary);
 }

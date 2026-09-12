@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReminderService } from '../../service/reminder.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TokenService } from '../../service/auth.token.service';
-import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
-import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
-import { Platform } from '@ionic/angular';
-import {ReminderEventsDTO} from "../../models/auth.data.transfer.object";
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { ReminderEventsDTO } from "../../models/auth.data.transfer.object";
 
 @Component({
   selector: 'app-reminders',
@@ -16,88 +15,94 @@ export class RemindersPage implements OnInit {
 
   reminders: ReminderEventsDTO[] = [];
   userId!: number | undefined;
+  loading = false;
+
+  private notificationsEnabled = false;
 
   constructor(
     private reminderService: ReminderService,
-    private route: ActivatedRoute,
     private router: Router,
     private tokenService: TokenService,
-    private localNotifications: LocalNotifications,
-    private androidPermissions: AndroidPermissions,
-    private platform: Platform
   ) { }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.userId = this.tokenService.getUserFromToken()?.userId;
-    this.platform.ready().then(() => {
-      if (this.platform.is('cordova')) {
-        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.RECEIVE_BOOT_COMPLETED).then(
-          result => {
-            if (!result.hasPermission) {
-              this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.RECEIVE_BOOT_COMPLETED);
-            }
-          },
-          err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.RECEIVE_BOOT_COMPLETED)
-        );
+    await this.ensureNotificationPermission();
+    this.getEventsReminder();
+  }
 
-        this.localNotifications.requestPermission().then(permission => {
-          if (permission) {
-            this.getEventsReminder();
-          } else {
-            console.error('Permissão para notificações negada');
-          }
-        });
-      } else {
-        console.warn('Cordova não está disponível - algumas funcionalidades podem não funcionar.');
-        this.getEventsReminder();
+  private async ensureNotificationPermission(): Promise<void> {
+    if (!Capacitor.isNativePlatform()) {
+      return;
+    }
+    try {
+      let status = await LocalNotifications.checkPermissions();
+      if (status.display !== 'granted') {
+        status = await LocalNotifications.requestPermissions();
+      }
+      this.notificationsEnabled = status.display === 'granted';
+    } catch (err) {
+      console.error('Falha ao solicitar permissão de notificações', err);
+      this.notificationsEnabled = false;
+    }
+  }
+
+  getEventsReminder(): void {
+    this.loading = true;
+    this.reminderService.getRemindersByUser(this.userId).subscribe({
+      next: (data: ReminderEventsDTO[]) => {
+        this.reminders = data ?? [];
+        this.loading = false;
+        this.scheduleNotifications(this.reminders);
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Erro ao carregar lembretes:', error);
       }
     });
   }
 
-  getEventsReminder() {
-    this.reminderService.getRemindersByUser(this.userId)
-      .subscribe((data: ReminderEventsDTO[]) => {
-          this.reminders = data;
-          if (this.platform.is('cordova')) {
-            this.scheduleNotifications(data);
-          }
-          console.log('Eventos carregados por reminders:', this.reminders);
-        },
-        (error) => {
-          console.error('Erro ao carregar eventos por categoria:', error);
-        });
+  private async scheduleNotifications(reminders: ReminderEventsDTO[]): Promise<void> {
+    if (!this.notificationsEnabled) {
+      return;
+    }
+    const now = Date.now();
+    const notifications = reminders
+      .filter(r => r.reminderId != null && new Date(r.reminderTime).getTime() > now)
+      .map(r => ({
+        id: Number(r.reminderId),
+        title: 'Lembrete de evento',
+        body: `Não perca: ${r.events?.eventName ?? 'seu evento'}`,
+        schedule: { at: new Date(r.reminderTime) },
+      }));
+
+    if (notifications.length) {
+      try {
+        await LocalNotifications.schedule({ notifications });
+      } catch (err) {
+        console.error('Falha ao agendar notificações', err);
+      }
+    }
   }
 
-  scheduleNotifications(reminders: ReminderEventsDTO[]) {
-    reminders.forEach(reminder => {
-      const reminderTime = new Date(reminder.reminderTime).getTime();
-      this.localNotifications.schedule({
-        id: reminder.reminderId,
-        title: 'Reminder',
-        text: `Lembrete para o evento: ${reminder.events?.eventName}`,
-        trigger: { at: new Date(reminderTime) },
-        smallIcon: 'res://icon',
-        icon: 'https://example.com/icon.png'
-      });
-    });
-  }
-
-  goToEventDetails(eventsId: bigint | undefined) {
-    console.log(eventsId);
+  goToEventDetails(eventsId: bigint | undefined): void {
     this.router.navigate(['/events', eventsId]);
   }
 
-  deleteReminder(reminderId: number | undefined) {
-    this.reminderService.deleteReminder(reminderId)
-      .subscribe(() => {
-          this.reminders = this.reminders.filter(reminder => reminder.reminderId !== reminderId);
-          console.log('Lembrete excluído com sucesso');
-          if (this.platform.is('cordova')) {
-            this.localNotifications.cancel(reminderId);  // Cancelar a notificação também
-          }
-        },
-        (error) => {
-          console.error('Erro ao excluir lembrete:', error);
-        });
+  deleteReminder(reminderId: number | undefined): void {
+    if (reminderId == null) {
+      return;
+    }
+    this.reminderService.deleteReminder(reminderId).subscribe({
+      next: async () => {
+        this.reminders = this.reminders.filter(r => r.reminderId !== reminderId);
+        if (Capacitor.isNativePlatform()) {
+          try {
+            await LocalNotifications.cancel({ notifications: [{ id: Number(reminderId) }] });
+          } catch { /* já cancelada / inexistente */ }
+        }
+      },
+      error: (error) => console.error('Erro ao excluir lembrete:', error)
+    });
   }
 }

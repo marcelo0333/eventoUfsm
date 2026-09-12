@@ -28,7 +28,7 @@ public class EventScrapperService {
     public void scrapeEvents() {
         if (scriptPath == null || scriptPath.isBlank() ||
             workingDir == null || workingDir.isBlank()) {
-            log.error("Propriedades não configuradas.");
+            log.debug("Scrapper não configurado (scrapper.script.path/working.dir vazios) — execução agendada ignorada.");
             return;
         }
 

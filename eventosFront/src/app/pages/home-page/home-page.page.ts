@@ -6,7 +6,8 @@ import { Router } from "@angular/router";
 import { TokenService } from "../../service/auth.token.service";
 import { UserModel } from "../../models/auth.data.transfer.object";
 import { FormControl } from "@angular/forms";
-import { debounceTime } from "rxjs";
+import { debounceTime, forkJoin, of } from "rxjs";
+import { catchError, finalize } from "rxjs/operators";
 import { CATEGORIES } from 'src/app/constants/categories.constant';
 
 @Component({
@@ -25,7 +26,9 @@ export class HomePagePage implements AfterViewInit, OnInit {
   searchResults: Event[] = [];
   categorys = CATEGORIES;
 
-  private loading: boolean = false;
+  loadingEvents = false;
+  loadingRecommended = false;
+  loadingBookmarks = false;
 
   constructor(
     private eventService: EventService,
@@ -62,71 +65,49 @@ export class HomePagePage implements AfterViewInit, OnInit {
     });
   }
 
-  getEventsRecommended() {
-    this.eventService.getEventsRecommended().subscribe(
-      (data: Event[]) => {
-        this.eventsRecommended = data;
-      }
-    );
-  }
+  loadEvents(refresher?: any): void {
+    this.loadingEvents = true;
+    this.loadingRecommended = true;
+    this.loadingBookmarks = true;
 
-  loadEvents(): void {
-    this.loading = true;
-    this.eventService.getEvents().subscribe(
-      (data: Event[]) => {
-        this.events = data;
-        console.log('Eventos carregados:', this.events);
-        this.loading = false;
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Erro ao carregar eventos:', error);
-      }
+    // Cada chamada é resiliente: uma falha (ex.: API de recomendação fora)
+    // não derruba as demais seções.
+    const events$ = this.eventService.getEvents().pipe(
+      catchError((err) => { console.error('Erro ao carregar eventos:', err); return of([] as Event[]); }),
+      finalize(() => (this.loadingEvents = false))
     );
-    this.eventService.getEventsBookmarks().subscribe(
-      (data: Event[]) => {
-        this.eventsBookmarks = data;
-        console.log('Eventos carregados:', this.eventsBookmarks);
-        this.loading = false;
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Erro ao carregar eventos:', error);
-      }
+    const bookmarks$ = this.eventService.getEventsBookmarks().pipe(
+      catchError((err) => { console.error('Erro ao carregar favoritos:', err); return of([] as Event[]); }),
+      finalize(() => (this.loadingBookmarks = false))
     );
-    this.eventService.getEventsRecommended().subscribe(
-      (data: Event[]) => {
-        this.eventsRecommended = data;
-        console.log('Eventos recomendados:', data);
-        this.loading = false;
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Erro ao carregar eventos recomendados:', error);
-      }
+    const recommended$ = this.eventService.getEventsRecommended().pipe(
+      catchError((err) => { console.error('Erro ao carregar recomendados:', err); return of([] as Event[]); }),
+      finalize(() => (this.loadingRecommended = false))
     );
-  }
 
-
-  swiperSlideChanged(e: any): void {
-    console.log('Slide alterado:', e);
+    forkJoin({ events: events$, bookmarks: bookmarks$, recommended: recommended$ }).subscribe({
+      next: ({ events, bookmarks, recommended }) => {
+        this.events = events;
+        this.eventsBookmarks = bookmarks;
+        this.eventsRecommended = recommended;
+      },
+      // Completa o pull-to-refresh apenas quando as respostas reais chegam.
+      complete: () => refresher?.target?.complete(),
+    });
   }
 
   ngAfterViewInit(): void {
   }
-    goToEventDetails(eventsId: bigint) {
-    console.log(eventsId);
+
+  goToEventDetails(eventsId: bigint) {
     this.router.navigate(['/events', eventsId]);
   }
 
   goToCategory(id: number) {
-    console.log(id);
     this.router.navigate(['tabs/category', id]);
   }
+
   doRefresh(event: any): void {
-    this.loadEvents();
-    setTimeout(() => {
-      event.target.complete();
-    }, 3000);
+    this.loadEvents(event);
   }
 }

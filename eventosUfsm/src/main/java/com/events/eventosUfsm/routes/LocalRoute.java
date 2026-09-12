@@ -11,7 +11,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/local")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class LocalRoute {
     private final LocalService service;
 

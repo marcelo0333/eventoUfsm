@@ -21,50 +21,38 @@ public class RatingService {
     private final EventsRepository eventsRepository;
     private final  EventsService eventsService;
 
-    public ResponseEntity<?> saveRating(UserRating userRating){
-        User user = assertUser(userRating);
-        Events event = assertEvent(userRating);
+    public ResponseEntity<?> saveRating(Long userId, UserRating userRating) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Events> event = eventsRepository.findById(userRating.getEvents().getEventsId());
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if (event.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found");
+        }
 
-        UserRating userRating1 = UserRating.builder()
-                .users(user)
-                .events(event)
+        UserRating toSave = UserRating.builder()
+                .users(user.get())
+                .events(event.get())
                 .rating(userRating.getRating())
                 .build();
 
-        eventsService.updateRating(event.getEventsId());
-        return ResponseEntity.ok().body(repository.save(userRating1));
+        eventsService.updateRating(event.get().getEventsId());
+        return ResponseEntity.ok().body(repository.save(toSave));
     }
-    public ResponseEntity<?> editRating(UserRating userRating){
+
+    public ResponseEntity<?> editRating(Long userId, UserRating userRating) {
         Optional<UserRating> optionalRating = repository.findById(userRating.getId());
-        if(optionalRating.isEmpty()){
+        if (optionalRating.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found this rating");
-        }else {
-
-            User user = assertUser(userRating);
-            Events events = assertEvent(userRating);
-            UserRating userRating1 = UserRating.builder()
-                    .id(userRating.getId())
-                    .users(user)
-                    .events(events)
-                    .rating(userRating.getRating())
-                    .build();
-
-            return ResponseEntity.ok().body(repository.save(userRating1));
         }
-    }
+        // Só o autor da avaliação pode editá-la.
+        UserRating existing = optionalRating.get();
+        if (existing.getUsers() == null || !existing.getUsers().getUserId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Avaliação não pertence ao usuário.");
+        }
 
-    public User assertUser(UserRating userRating) {
-        Optional<User> optionalUser = userRepository.findById(userRating.getUsers().getUserId());
-        if (optionalUser.isEmpty()) {
-            System.out.println("User not found");
-        }
-        return optionalUser.get();
-    }
-    public Events assertEvent(UserRating userRating) {
-        Optional<Events> optionalEvents = eventsRepository.findById(userRating.getEvents().getEventsId());
-        if (optionalEvents.isEmpty()) {
-            System.out.println("Event not found");
-        }
-        return optionalEvents.get();
+        existing.setRating(userRating.getRating());
+        return ResponseEntity.ok().body(repository.save(existing));
     }
 }

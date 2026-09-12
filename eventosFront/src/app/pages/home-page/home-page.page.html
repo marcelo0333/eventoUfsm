@@ -1,9 +1,15 @@
 <ion-header [translucent]="true">
-  <ion-toolbar style="padding: 5px;">
-    <ion-searchbar [formControl]="searchControl" color="light" placeholder="Procurar eventos"></ion-searchbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [formControl]="searchControl"
+      color="light"
+      placeholder="Procurar eventos"
+      class="ion-margin-horizontal">
+    </ion-searchbar>
   </ion-toolbar>
-  <ion-list>
-    <ion-item *ngFor="let event of searchResults" (click)="goToEventDetails(event.eventsId)" >
+  <ion-list *ngIf="searchResults?.length" class="search-results">
+    <ion-item *ngFor="let event of searchResults" (click)="goToEventDetails(event.eventsId)" button detail>
+      <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
       <ion-label>{{ event.eventName }}</ion-label>
     </ion-item>
   </ion-list>
@@ -14,28 +20,30 @@
     <ion-refresher-content pullingIcon="arrow-down-circle-outline" refreshingSpinner="circular">
     </ion-refresher-content>
   </ion-refresher>
-  <h2 style="padding: 5px;">Eventos mais recentes</h2>
-    <app-slides [events]="events" [title]="'recentes'"></app-slides>
 
-  <h2 style="padding: 5px;">Eventos recomendados para você</h2>
-    <app-slides [eventsRecommended]="eventsRecommended" [title]="'recommended'"></app-slides>
-  <h2 style="padding: 5px;">Categorias</h2>
-<swiper-container
+  <h2 class="section-title">Eventos mais recentes</h2>
+  <app-slides [events]="events" [loading]="loadingEvents" [title]="'recentes'"></app-slides>
+
+  <h2 class="section-title">Recomendados para você</h2>
+  <app-slides [eventsRecommended]="eventsRecommended" [loading]="loadingRecommended" [title]="'recommended'"></app-slides>
+
+  <h2 class="section-title">Categorias</h2>
+  <swiper-container
     [loop]="true"
     [pagination]="true"
     [slidesPerView]="2.5"
-    [spaceBetween]="12">
-  <swiper-slide *ngFor="let category of categorys" class="swiper-slide-custom">
-    <ion-button size="large" shape="round" (click)="goToCategory(category.id)">
-      <img [src]="category.imgAsset" class="category-img">
-    </ion-button>
-    <p class="category-text">{{ category.CategoryName }}</p>
-  </swiper-slide>
-</swiper-container>
+    [spaceBetween]="12"
+    class="categories-swiper">
+    <swiper-slide *ngFor="let category of categorys" class="swiper-slide-custom">
+      <ion-button fill="clear" class="category-button" (click)="goToCategory(category.id)">
+        <img [src]="category.imgAsset" class="category-img" alt="{{ category.CategoryName }}">
+      </ion-button>
+      <p class="category-text">{{ category.CategoryName }}</p>
+    </swiper-slide>
+  </swiper-container>
 
-<h2 style="padding: 5px;">Eventos mais favoritados</h2>
+  <h2 class="section-title">Mais favoritados</h2>
+  <app-slides [eventsBookmarks]="eventsBookmarks" [loading]="loadingBookmarks" [title]="'bookmarks'"></app-slides>
 
-<app-slides [eventsBookmarks]="eventsBookmarks" [title]="'bookmarks'"></app-slides>
-
-
+  <div class="content-bottom-spacer"></div>
 </ion-content>

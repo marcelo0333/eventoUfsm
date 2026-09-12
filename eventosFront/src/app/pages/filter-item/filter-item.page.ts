@@ -17,6 +17,8 @@ export class FilterItemPage implements OnInit {
   events: (Event | undefined)[] = [];
   userBookmarks: Bookmark[] = [];
   category: any;
+  loading = false;
+  isBookmarks = false;
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
@@ -27,10 +29,12 @@ export class FilterItemPage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       if (params.get('typeEvent')) {
+        this.isBookmarks = false;
         this.categoryType = params.get('typeEvent')!;
         this.category = CATEGORIES.find(cat => cat.id.toString() === this.categoryType);
         this.loadEventsByCategory();
       } else {
+        this.isBookmarks = true;
         const userId = this.tokenService.getUserFromToken()?.userId;
         if (userId) {
           this.loadUserBookmarks(userId.toString());
@@ -40,31 +44,26 @@ export class FilterItemPage implements OnInit {
   }
 
   loadEventsByCategory() {
-    this.eventService.getEventsByType(this.categoryType).subscribe(
-      (data: Event[]) => {
-        this.events = data;
-        console.log('Eventos carregados por categoria:', this.events);
-      },
-      (error) => {
-        console.error('Erro ao carregar eventos por categoria:', error);
-      }
-    );
+    this.loading = true;
+    this.eventService.getEventsByType(this.categoryType).subscribe({
+      next: (data: Event[]) => { this.events = data ?? []; this.loading = false; },
+      error: (error) => { this.loading = false; console.error('Erro ao carregar eventos por categoria:', error); }
+    });
   }
 
   loadUserBookmarks(userId: string) {
-    this.eventService.getUserBookmarks(userId).subscribe(
-      (data: Event[]) => {
-        this.events = data;
-        console.log('Favoritos carregados:', this.events);
-      },
-      (error) => {
-        console.error('Erro ao carregar favoritos do usuário:', error);
-      }
-    );
+    this.loading = true;
+    this.eventService.getUserBookmarks(userId).subscribe({
+      next: (data: Event[]) => { this.events = data ?? []; this.loading = false; },
+      error: (error) => { this.loading = false; console.error('Erro ao carregar favoritos do usuário:', error); }
+    });
+  }
+
+  get emptyMessage(): string {
+    return this.isBookmarks ? 'Você ainda não favoritou eventos.' : 'Nenhum evento nesta categoria.';
   }
 
   goToEventDetails(eventsId: bigint | undefined) {
-    console.log(eventsId);
     this.router.navigate(['/events', eventsId]);
   }
 }

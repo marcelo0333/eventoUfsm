@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import logging
+import os
 import time
 
 logging.basicConfig(level=logging.INFO)
@@ -13,19 +14,24 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="API de Recomendação - SmartEventos")
 
+# Allowlist de origens via env var (separadas por vírgula); default restrito ao dev local.
+_allowed_origins = os.environ.get(
+    "CORS_ALLOWED_ORIGINS", "http://localhost:8100,http://localhost:4200"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=[o.strip() for o in _allowed_origins if o.strip()],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
 DB_CONFIG = {
-    "user": "postgres",
-    "password": "1234",
-    "host": "localhost",
-    "port": "5432",
-    "database": "eventsDB"
+    "user": os.environ.get("DB_USER", "postgres"),
+    "password": os.environ.get("DB_PASSWORD", "1234"),
+    "host": os.environ.get("DB_HOST", "localhost"),
+    "port": os.environ.get("DB_PORT", "5432"),
+    "database": os.environ.get("DB_NAME", "eventsDB"),
 }
 
 # Cache simples em memória

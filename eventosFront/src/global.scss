@@ -42,5 +42,144 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: max(16px, env(safe-area-inset-top)) 16px
+           max(16px, env(safe-area-inset-bottom)) 16px;
+  box-sizing: border-box;
 }
+
+/* ------------------------------------------------------------------ *
+ * Estilos globais do app
+ * ------------------------------------------------------------------ */
+
+/* Toolbars com respiro e sem sombra dura */
+ion-toolbar {
+  --border-width: 0 !important;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+}
+
+/* Título de seção reutilizável (substitui os <h2 style="padding:5px"> soltos) */
+.section-title {
+  margin: 22px 16px 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ion-text-color);
+}
+
+.section-title--sub {
+  margin: 4px 16px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+}
+
+/* Cards com cantos arredondados e sombra suave e consistente */
+ion-card {
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  overflow: hidden;
+}
+
+/* Botões mais modernos por padrão */
+ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Inputs dentro de items com um pouco mais de respiro */
+ion-item {
+  --border-radius: var(--app-radius-sm);
+}
+
+/* ------------------------------------------------------------------ *
+ * Telas de autenticação (login / cadastro) — estilos compartilhados
+ * ------------------------------------------------------------------ */
+.auth-content {
+  --background: linear-gradient(160deg, var(--ion-color-primary) 0%, var(--ion-color-tertiary) 100%);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow);
+  margin: 0;
+}
+
+.auth-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 24px 12px;
+}
+
+.auth-hero .logo-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.auth-hero .logo-wrap ion-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ion-color-primary);
+}
+
+.brand-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}
+
+.auth-body {
+  padding: 8px 20px 24px;
+}
+
+.auth-field {
+  --border-radius: var(--app-radius-sm);
+  margin-bottom: 6px;
+}
+
+.auth-forgot {
+  text-align: right;
+  margin: 4px 4px 16px;
+  font-size: 0.85rem;
+}
+
+.auth-forgot a,
+.auth-switch a {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-submit {
+  margin-top: 8px;
+}
+
+.auth-switch {
+  text-align: center;
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}
+

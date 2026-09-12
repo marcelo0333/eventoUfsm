@@ -1,70 +1,103 @@
-version: "3.9"
+# Compose principal do SmartEventos.
+# Uso típico para desenvolvimento/teste no celular:
+#   docker compose up -d db backend scraper
+#
+# O scraper roda em loop (1 em 1h) buscando eventos novos assim que sobe — não precisa
+# disparar manualmente. Serviços com profiles: ["tools"] (rake) continuam sob demanda.
+#
+# Variáveis são lidas do arquivo .env da raiz (copie de .env.example) e têm
+# defaults de desenvolvimento aqui para funcionar out-of-the-box.
 
 services:
 
   db:
     image: postgres:15
     container_name: eventos_db
-    restart: always
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: eventsDB
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ${POSTGRES_DB:-eventsDB}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-eventsDB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
     build: ./eventosUfsm
     container_name: eventos_backend
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      # host:container — o app escuta em 9090; o celular acessa via IP da LAN nesta porta
+      - "9090:9090"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       SERVER_PORT: 9090
-      DB_URL: jdbc:postgresql://db:5432/eventsDB
-      DB_USER: postgres
-      DB_PASSWORD: 1234
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-eventsDB}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-1234}
+      # Em produção defina JWT_SECRET no .env (Base64, 256+ bits). O default é só de dev.
+      JWT_SECRET: ${JWT_SECRET:-ZGV2LW9ubHktc2VjcmV0LW5hby11c2UtZW0tcHJvZHVjYW8tMTIzNDU2Nzg5MA==}
       IMAGE_DIR: /app/images
-      SCRAPPER_SCRIPT_PATH: /app/scrapper/getEvents.js
-      SCRAPPER_WORKDIR: /app/scrapper
+      # App Android (Capacitor) roda em https://localhost; sem essa origem o CORS bloqueia o login pelo celular.
+      CORS_ALLOWED_ORIGINS: "http://localhost:8100,http://localhost:4200,http://localhost,https://localhost,capacitor://localhost"
     volumes:
       - ./eventosUfsm/images:/app/images
-      - ./scrapper_events_ufsm:/app/scrapper
 
-  frontend:
-    build: ./eventosFront
-    container_name: eventos_front
+  # API de recomendação (opcional — a home funciona sem ela)
+  recommendation:
+    build: ./recommendationApi
+    container_name: eventos_recommendation
+    restart: unless-stopped
     ports:
-      - "4200:80"
+      - "8001:8001"
     depends_on:
-      - backend
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-eventsDB}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-1234}
+      CORS_ALLOWED_ORIGINS: "*"
 
+  # Extração de keywords (opcional, roda sob demanda)
   rake:
     build: ./rake_keywords
     container_name: eventos_rake
+    profiles: ["tools"]
     depends_on:
-      - db
-      - backend
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: db
-      DB_NAME: eventsDB
-      DB_USER: postgres
-      DB_PASSWORD: 1234
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-eventsDB}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-1234}
 
+  # Scraper de eventos — roda em loop, buscando eventos novos a cada 1h (ver entrypoint.sh)
   scraper:
     build: ./scrapper_events_ufsm
     container_name: eventos_scraper
+    restart: unless-stopped
     depends_on:
-      - db
-      - backend
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: db
-      DB_NAME: eventsDB
-      DB_USER: postgres
-      DB_PASSWORD: 1234
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-eventsDB}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-1234}
 
 volumes:
   postgres_data:

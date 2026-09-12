@@ -1,20 +1,40 @@
-import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot} from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { TokenService } from './auth.token.service';
 
-@Injectable({
-  providedIn: 'root'
-  })
-class AdminGuard {
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-    console.log("AuthGuard is being called");
+/**
+ * Exige uma sessão válida (token não expirado). Redireciona para /login caso contrário.
+ * Aplicado às rotas protegidas do app (/tabs e afins).
+ */
+export const authGuard: CanActivateFn = () => {
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
 
+  const tokens = tokenService.getTokenParsed();
+  if (tokens?.accessToken && tokenService.tokenValid(tokens.accessToken)) {
     return true;
   }
-}
-  export const IsAdminGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean =>{
-  return inject(AdminGuard).canActivate(route, state)
-}
+  router.navigate(['/login']);
+  return false;
+};
 
+/**
+ * Exige que o usuário autenticado tenha papel ADMIN. Aplicado a rotas administrativas
+ * (ex.: criação/edição de eventos). Defesa em profundidade — a autorização real é no backend.
+ */
+export const adminGuard: CanActivateFn = () => {
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
+
+  const tokens = tokenService.getTokenParsed();
+  const hasValidSession = tokens?.accessToken && tokenService.tokenValid(tokens.accessToken);
+
+  if (hasValidSession && tokenService.isAdmin()) {
+    return true;
+  }
+  router.navigate(hasValidSession ? ['/'] : ['/login']);
+  return false;
+};
+
+// Compatibilidade com imports existentes.
+export const IsAdminGuard: CanActivateFn = authGuard;

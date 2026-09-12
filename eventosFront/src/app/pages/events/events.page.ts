@@ -299,9 +299,15 @@ export class EventsPage implements OnInit, AfterViewInit {
       componentProps: {
         userId: this.userId,
         eventId: this.eventId,
+        eventName: this.event.eventName,
         dateFinal: this.event.dateFinal
       }
     });
     await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data?.reminderDateTime) {
+      this.showSuccessToast('Lembrete salvo com sucesso!');
+    }
   }
 }

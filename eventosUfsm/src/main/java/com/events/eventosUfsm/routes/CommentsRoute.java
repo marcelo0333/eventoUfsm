@@ -1,12 +1,12 @@
 package com.events.eventosUfsm.routes;
 
-import com.events.eventosUfsm.model.comments.CommentsDTO;
 import com.events.eventosUfsm.model.comments.UserComments;
-import com.events.eventosUfsm.model.user.BookmarksDTO;
+import com.events.eventosUfsm.model.user.User;
 import com.events.eventosUfsm.service.CommentsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,24 +14,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class CommentsRoute {
 
     private final CommentsService service;
 
     @PostMapping("/save")
-    public ResponseEntity saveEvent(@Valid @RequestBody UserComments userComments){
-        return service.saveComment(userComments);
+    public ResponseEntity<?> saveEvent(@Valid @RequestBody UserComments userComments,
+                                       @AuthenticationPrincipal User currentUser) {
+        return service.saveComment(currentUser.getUserId(), userComments);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity wipeEvent(@RequestParam Long id){
-        return service.wipeComment(id);
+    public ResponseEntity<?> wipeEvent(@RequestParam Long id,
+                                       @AuthenticationPrincipal User currentUser) {
+        return service.wipeComment(id, currentUser.getUserId());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findEventsAndComments(@PathVariable Long id){
-        List<UserComments> comments = service.findCommentsByEventId(id);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<UserComments>> findEventsAndComments(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findCommentsByEventId(id));
     }
 }
