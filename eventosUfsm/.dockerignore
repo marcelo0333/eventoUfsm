@@ -1,0 +1,20 @@
+# Build artifacts
+target/
+build/
+
+# VCS
+.git/
+.gitignore
+.gitattributes
+
+# Segredos / env local
+.env
+.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Docs (não necessários no build da imagem)
+*.md
