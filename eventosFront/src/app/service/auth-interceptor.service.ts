@@ -2,13 +2,33 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+// Endpoints públicos que não devem receber o header Authorization.
+const PUBLIC_PATHS = ['/auth/login', '/auth/register', '/auth/refresh-token'];
+
+// Lê o accessToken do blob JSON guardado sob environment.tokenKey.
+// (Injetar TokenService aqui causaria dependência circular com HttpClient.)
+function readAccessToken(): string | null {
+  const raw = localStorage.getItem(environment.tokenKey);
+  if (!raw) {
+    return null;
+  }
+  try {
+    return JSON.parse(raw).accessToken ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   let router = inject(Router);
 
-  let token = localStorage.getItem('accessToken');
-  if (token && !router.url.includes('/login')) {
+  const isPublic = PUBLIC_PATHS.some((path) => request.url.includes(path));
+  const token = readAccessToken();
+
+  if (token && !isPublic) {
     request = request.clone({
       setHeaders: { Authorization: 'Bearer ' + token },
     });

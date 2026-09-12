@@ -1,3 +1,7 @@
 <ion-app>
+  <div class="offline-banner" *ngIf="(online$ | async) === false">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <span>Sem conexão com a internet</span>
+  </div>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

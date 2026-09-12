@@ -84,7 +84,8 @@ export class TokenService {
     const decodeToken: JwtPayload | null = jwtDecode(token)
 
     if (decodeToken?.exp) {
-      return (decodeToken.exp * 2000) > (new Date().getTime());
+      // exp do JWT é em segundos; converter para milissegundos (x1000).
+      return (decodeToken.exp * 1000) > (new Date().getTime());
     }
 
     return false;
