@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,13 @@ import java.util.function.Function;
 public class JwtService extends JwtContract {
 
   private static final long SET_01_MIN = 60000L;
-  private static final long ACCESS_TOKEN_VALIDITY = SET_01_MIN * 15; // 15 minutos
-  private static final long REFRESH_TOKEN_VALIDITY = SET_01_MIN * 60; // 1 hora
+  private static final long SET_01_HOUR = SET_01_MIN * 60;
+  // 15 min/1h era curto demais para uso normal do app (deslogava sozinho com frequência).
+  private static final long ACCESS_TOKEN_VALIDITY = SET_01_HOUR * 24; // 24 horas
+  private static final long REFRESH_TOKEN_VALIDITY = SET_01_HOUR * 24 * 30; // 30 dias
 
-  private static final String SECRET_KEY = "DFatenFSYbaa+PaCOygVv8JtOc3d1UPv2BCIIeQ2TwGTA2EuhNQpGhszoUEN2bFR";
+  @Value("${jwt.secret}")
+  private String secretKey;
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return generateToken(extraClaims, userDetails, ACCESS_TOKEN_VALIDITY);
@@ -89,7 +93,7 @@ public class JwtService extends JwtContract {
   }
 
   public Key getSignInKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 }
